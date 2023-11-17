@@ -8,6 +8,6 @@ use DB;
 class Locker extends Model
 {
 
-    protected $table = 'massage_entries';
+    protected $table = 'locker_entries';
 
 }

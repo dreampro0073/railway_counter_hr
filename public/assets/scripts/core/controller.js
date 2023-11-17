@@ -237,3 +237,97 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService) {
     }
 });
 
+
+app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+    $scope.formData = {
+        name:'',
+        mobile:"",
+        paid_amount:0,
+    };
+
+    $scope.filter = {};
+
+    $scope.entry_id = 0;
+
+    $scope.check_shift = "";
+    $scope.pay_types = [];
+    $scope.avail_lockers = [];
+    $scope.days = [];
+    
+    $scope.init = function () {
+        
+        DBService.postCall($scope.filter, '/api/locker/init').then((data) => {
+            if (data.success) {
+                $scope.pay_types = data.pay_types;
+                $scope.l_entries = data.l_entries;
+                $scope.avail_lockers = data.avail_lockers;
+                $scope.days = data.days;
+            }
+        });
+    }
+    $scope.filterClear = function(){
+        $scope.filter = {};
+        $scope.init();
+    }
+
+    $scope.edit = function(entry_id){
+        $scope.entry_id = entry_id;
+        DBService.postCall({entry_id : $scope.entry_id}, '/api/locker/edit-init').then((data) => {
+            if (data.success) {
+                $scope.formData = data.l_entry;
+                $("#exampleModalCenter").modal("show");
+            }
+            
+        });
+    }
+    $scope.add = function(){
+        $("#exampleModalCenter").modal("show");    
+    }
+
+    $scope.hideModal = () => {
+        $("#exampleModalCenter").modal("hide");
+        $scope.entry_id = 0;
+        $scope.formData = {
+            name:'',
+            mobile:"",
+            total_amount:0,
+            paid_amount:0,
+            balance_amount:0,
+        };
+    }
+
+    $scope.onSubmit = function () {
+        $scope.loading = true;
+        DBService.postCall($scope.formData, '/api/locker/store').then((data) => {
+            if (data.success) {
+                $("#exampleModalCenter").modal("hide");
+                $scope.entry_id = 0;
+                $scope.formData = {
+                    name:'',
+                    mobile:"",
+                    total_amount:0,
+                    paid_amount:0,
+                    balance_amount:0,
+                    hours_occ:0,
+                    check_in:'',
+                    check_out:'',
+                };
+                $scope.init();
+                // window.open(base_url+'/admin/locker/print/'+data.id, '_blank');
+
+            }
+            $scope.loading = false;
+        });
+    }
+
+    $scope.calCheck = () => {
+        DBService.postCall({check_in:$scope.formData.check_in,no_of_day:$scope.formData.no_of_day}, '/api/locker/cal-check').then((data) => {
+            if (data.success) {
+               // console.log(data);
+               $scope.formData.check_out = data.check_out;
+               $scope.changeAmount();
+            }
+        });
+    }
+});

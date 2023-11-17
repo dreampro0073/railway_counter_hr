@@ -18,7 +18,9 @@ class Entry extends Model
         return $ar;
     }
 
-   
+    public static function getAvailLockers(){
+        return DB::table('lockers')->where('status',0)->get();
+    }
 
     public static function showPayTypes(){
         return [1=>'Cash',2=>"UPI"];
@@ -27,6 +29,14 @@ class Entry extends Model
     public static function hours(){
         $ar = [];
         for ($i=1; $i <= 24; $i++) { 
+           $ar[] = ['value'=>$i,'label'=>$i];
+        }
+        return $ar;
+    }
+
+    public static function days(){
+        $ar = [];
+        for ($i=1; $i <= 15; $i++) { 
            $ar[] = ['value'=>$i,'label'=>$i];
         }
         return $ar;

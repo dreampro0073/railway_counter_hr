@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EntryContoller;
 use App\Http\Controllers\MassageController;
+use App\Http\Controllers\LockerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,14 +40,14 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/print-report', [EntryContoller::class,'printReports']);
 
 		});
-
-		// Route::get('/sitting',[AdminController::class,'sitting']);
-		// Route::get('/print/{id?}', [EntryContoller::class,'printPost']);
-		// Route::get('/print-report', [EntryContoller::class,'printReports']);
-
 		Route::group(['prefix'=>"massage"], function(){
 			Route::get('/',[MassageController::class,'massage']);
 			Route::get('/print/{id?}', [MassageController::class,'printPost']);
+			
+		});
+		Route::group(['prefix'=>"locker"], function(){
+			Route::get('/',[LockerController::class,'index']);
+			Route::get('/print/{id?}', [LockerController::class,'printPost']);
 			
 		});
 	});
@@ -65,5 +66,11 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/edit-init',[MassageController::class,'editMassage']);
 		Route::post('/store',[MassageController::class,'store']);
 		Route::post('/change-time',[MassageController::class,'changeTime']);
+	});
+	Route::group(['prefix'=>"locker"], function(){
+		Route::post('/init',[LockerController::class,'initLocker']);
+		Route::post('/edit-init',[LockerController::class,'editLocker']);
+		Route::post('/store',[LockerController::class,'store']);
+		Route::post('/cal-check',[LockerController::class,'calCheck']);
 	});
 });
