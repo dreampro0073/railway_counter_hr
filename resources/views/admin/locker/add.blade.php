@@ -70,14 +70,11 @@
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
-                        <div ng-if="entry_id !=0" class="col-md-3 form-group">
+                        <div class="col-md-3 form-group" ng-if="formData.no_of_day !=''">
                             <label>Paid Amount</label>
                             <input type="number" ng-model="formData.paid_amount" class="form-control" readonly />
                         </div>                        
-                        <div ng-if="entry_id !=0" class="col-md-3 form-group">
-                            <label>Balance Amount</label>
-                            <input type="number" ng-model="formData.balance_amount" class="form-control" readonly />
-                        </div>
+                        
                         <div class="col-md-4 form-group">
                             <label>Check Out</label>
                             <input type="text" class="form-control" ng-model="formData.check_out" readonly>

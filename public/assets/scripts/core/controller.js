@@ -244,6 +244,7 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
         name:'',
         mobile:"",
         paid_amount:0,
+        no_of_day:0,
     };
 
     $scope.filter = {};
@@ -329,5 +330,15 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
                $scope.changeAmount();
             }
         });
+    }
+
+    $scope.changeAmount = function(){
+        $scope.formData.paid_amount = 0;
+        var amount = 50;
+        if($scope.formData.no_of_day > 1){
+            amount  = amount + (($scope.formData.no_of_day-1)*70);
+        }
+
+        $scope.formData.paid_amount = amount;
     }
 });
