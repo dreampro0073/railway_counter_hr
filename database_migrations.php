@@ -10,4 +10,6 @@ ALTER TABLE `sitting_entries` ADD `date` DATE NULL DEFAULT NULL AFTER `seat_no`;
 
 ALTER TABLE `massage_entries` ADD `name` VARCHAR(255) NULL DEFAULT NULL AFTER `unique_id`;
 
+ALTER TABLE `massage_entries` ADD `time_period` INT NOT NULL DEFAULT '0' AFTER `pay_type`;
+
 ?>

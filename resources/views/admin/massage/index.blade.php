@@ -34,6 +34,8 @@
                         <tr class="table-primary">
                             <th>S.no</th>
                             <th>Bill no</th>
+                            <th>Name</th>
+
                             <th>Pay Type</th>
                             <th>Total Amount</th>
                             <th>#</th>
@@ -42,7 +44,9 @@
                     <tbody ng-if="m_entries.length > 0">
                         <tr ng-repeat="item in m_entries">
                             <td>@{{ $index+1 }}</td>
+                           
                             <td>@{{ item.unique_id }}</td>
+                            <td>@{{ item.name }}</td>
                             <td>@{{ item.pay_by }}</td>
                             <td>@{{ item.paid_amount }}</td>
                             <td>

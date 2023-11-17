@@ -28,7 +28,7 @@ class MassageController extends Controller {
 	}
 
 	public function initMassage(Request $request){
-		$m_entries = DB::table('massage_entries')->get();
+		$m_entries = DB::table('massage_entries')->orderBy('id','DESC')->get();
 
 		$show_pay_types = Entry::showPayTypes();
 		if(sizeof($m_entries) > 0){
@@ -48,6 +48,10 @@ class MassageController extends Controller {
 	public function editMassage(Request $request){
 		$m_entry = Massage::where('id', $request->m_id)->first();
 
+		if($m_entry){
+			$m_entry->paid_amount = $m_entry->paid_amount*1;
+		}
+
 		$data['success'] = true;
 		$data['m_entry'] = $m_entry;
 		return Response::json($data, 200, []);
@@ -63,6 +67,17 @@ class MassageController extends Controller {
 
 		$data['success'] = true;
 		$data['out_time'] = $new_time;
+		return Response::json($data, 200, []);
+	}
+	public function checkMC(Request $request){
+			
+		$in_time  = date("h:i A",strtotime("+10 minutes"));
+
+
+		$check = DB::table('massage_entries')->where('')->first();
+
+		$data['success'] = true;
+		$data['in_time'] = $in_time;
 		return Response::json($data, 200, []);
 	}
 
@@ -98,6 +113,8 @@ class MassageController extends Controller {
 			$entry->paid_amount = $request->paid_amount;
 			$entry->pay_type = $request->pay_type;
 			$entry->remarks = $request->remarks;
+			$entry->time_period = $request->time_period;
+			$entry->chair_no = $request->char_no;
 			$entry->save();
 
 			
