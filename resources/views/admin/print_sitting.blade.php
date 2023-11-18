@@ -7,7 +7,7 @@
 		@page { margin: 5px; }
 		body { margin: 5px; }
 		.main{
-			/*width: 200px;*/
+			width: 200px;
 		}
 		h4{
 			
@@ -47,7 +47,7 @@
 	</style>
 </head>
 <body>
-	<div class="main" id="printableArea">
+	<div id="printableArea" class="main">
 		<h4>
 			M/s New Nabaratna Hospitality Pvt. Ltd.
 		</h4>
@@ -139,15 +139,12 @@
 	</div>
 	<script type="text/javascript">
 		window.onload = function(e){ 
-			alert('asasas');
-		 //    var printContents = document.getElementById("printableArea").innerHTML;
-			// var originalContents = document.body.innerHTML;
-			// document.body.innerHTML = printContents;
-			// window.print();
-			// document.body.innerHTML = originalContents; 
+		    var printContents = document.getElementById("printableArea").innerHTML;
+			var originalContents = document.body.innerHTML;
+			document.body.innerHTML = printContents;
+			window.print();
+			document.body.innerHTML = originalContents; 
 		}
 	</script>
 </body>
 </html>
-
-

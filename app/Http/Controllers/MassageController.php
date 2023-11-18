@@ -28,7 +28,17 @@ class MassageController extends Controller {
 	}
 
 	public function initMassage(Request $request){
-		$m_entries = DB::table('massage_entries')->orderBy('id','DESC')->get();
+		
+
+		$m_entries = DB::table('massage_entries');
+
+		if($request->unique_id){
+			$m_entries = $m_entries->where('massage_entries.unique_id', 'LIKE', '%'.$request->unique_id.'%');
+		}	
+
+
+		$date_ar = [date("Y-m-d",strtotime('-1 day')),date("Y-m-d",strtotime("now"))];
+		$m_entries = $m_entries	->orderBy('id', "DESC")->whereBetween('date',$date_ar)->orderBy('id','DESC')->get();
 
 		$show_pay_types = Entry::showPayTypes();
 		if(sizeof($m_entries) > 0){
@@ -144,6 +154,7 @@ class MassageController extends Controller {
 			$entry->paid_amount = $request->paid_amount;
 			$entry->pay_type = $request->pay_type;
 			$entry->remarks = $request->remarks;
+			$entry->date = date("Y-m-d");
 			$entry->time_period = $request->time_period;
 			$entry->chair_no = $request->chair_no;
 			$entry->save();
@@ -163,8 +174,6 @@ class MassageController extends Controller {
 	public function printPost($id = 0){
 
         $print_data = DB::table('massage_entries')->where('id', $id)->first();
-
-        dd($print_data);
         return view('admin.print_page_massage', compact('print_data'));
 
 		

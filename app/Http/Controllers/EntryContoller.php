@@ -73,6 +73,10 @@ class EntryContoller extends Controller {
 			$sitting_entry->paid_amount = $sitting_entry->paid_amount*1;
 			$sitting_entry->total_amount = $sitting_entry->paid_amount*1;
 			// $sitting_entry->no_of_children = $sitting_entry->no_of_children*1;
+
+
+			$sitting_entry->check_in = date("h:i A",strtotime($sitting_entry->check_in));
+			$sitting_entry->check_out = date("h:i A",strtotime($sitting_entry->check_out));
 		}
 
 		$data['success'] = true;
@@ -153,8 +157,8 @@ class EntryContoller extends Controller {
 			$entry->no_of_children = $request->no_of_children ? $request->no_of_children : 0;
 			$entry->no_of_baby_staff = $request->no_of_baby_staff ? $request->no_of_baby_staff : 0;
 			$entry->hours_occ = $request->hours_occ ? $request->hours_occ : 0;
-			$entry->check_in = date("h:i A",strtotime($request->check_in));
-			$entry->check_out = date("h:i A",strtotime($request->check_out));
+			$entry->check_in = date("H:i:s",strtotime($request->check_in));
+			$entry->check_out = date("H:i:s",strtotime($request->check_out));
 			
 			$entry->seat_no = $request->seat_no;
 			$entry->paid_amount = $total_amount;
@@ -207,6 +211,7 @@ class EntryContoller extends Controller {
 	
 	public function printPost($id = 0){
 
+
         $print_data = DB::table('sitting_entries')->where('id', $id)->first();
 		$print_data->type = "silip";
         $print_data->total_member = $print_data->no_of_adults + $print_data->no_of_children + $print_data->no_of_baby_staff;
@@ -225,25 +230,25 @@ class EntryContoller extends Controller {
             $print_data->adult_other_hour_amount = $print_data->no_of_adults * 20 * $hours;
             $print_data->children_other_hour_amount = $print_data->no_of_children * 10 * $hours; 
         }
-
-		$this->printFinal($print_data);
+		return view('admin.print_sitting',compact('print_data'));
 	}
 
 	public function printFinal($print_data){
 
-        $options = new Options();
-        $options->set('isRemoteEnabled', true);
+		// return view('admin.print_sitting', compact('print_data'));
+        // $options = new Options();
+        // $options->set('isRemoteEnabled', true);
 
-        $dompdf = new Dompdf($options);
+        // $dompdf = new Dompdf($options);
 
-        define("DOMPDF_UNICODE_ENABLED", true);
+        // define("DOMPDF_UNICODE_ENABLED", true);
 
-        $html = view('admin.print_page_sitting', compact('print_data'));
+        // $html = view('admin.print_page_sitting', compact('print_data'));
 
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper([0,0,300,405]);
-        $dompdf->render();
-        $dompdf->stream(date("dmY",strtotime("now")).'.pdf',array("Attachment" => false));
+        // $dompdf->loadHtml($html);
+        // $dompdf->setPaper([0,0,300,405]);
+        // $dompdf->render();
+        // $dompdf->stream(date("dmY",strtotime("now")).'.pdf',array("Attachment" => false));
     }
 
 }
