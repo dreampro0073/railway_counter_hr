@@ -51,7 +51,7 @@
                             <td>@{{ item.paid_amount }}</td>
                             <td>
                                 <!-- <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a> -->
-                                <button type="button" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</button>
+                                <!-- <button type="button" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</button> -->
                                 <a href="{{url('/admin/massage/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
                             </td>
                         </tr>

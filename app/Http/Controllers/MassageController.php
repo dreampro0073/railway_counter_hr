@@ -50,6 +50,8 @@ class MassageController extends Controller {
 
 		if($m_entry){
 			$m_entry->paid_amount = $m_entry->paid_amount*1;
+			$m_entry->in_time = date("h:i A",strtotime($m_entry->in_time));
+			$m_entry->out_time = date("h:i A",strtotime($m_entry->out_time));
 		}
 
 		$data['success'] = true;
@@ -71,13 +73,42 @@ class MassageController extends Controller {
 	}
 	public function checkMC(Request $request){
 			
-		$in_time  = date("h:i A",strtotime("+10 minutes"));
+		// $in_time  = date("h:i A",strtotime("+10 minutes"));
+		// $in_time  = date("h:i A",strtotime("+2 minutes"));
+
+		// $now_time = "20:19:00";
+
+		// dd($now_time);
+		$in_time = '';	
+		$now_time = date("H:i:s",strtotime("+2 minutes"));
 
 
-		$check = DB::table('massage_entries')->where('')->first();
+		$check1 = DB::table('massage_entries')->where('chair_no',1)->where('out_time','>',$now_time)->orderBy('id','DESC')->first();
+
+		$check2= DB::table('massage_entries')->where('chair_no',2)->where('out_time','>',$now_time)->orderBy('id','DESC')->first();
+
+		if(!$check1 && !$check2){
+			$in_time = $now_time;
+			$chair_no = 1;
+		}else if($check1 && !$check2){
+			$in_time =  $now_time;
+			$chair_no = 2;
+		}elseif(!$check1 && $check2){
+			$in_time =  $now_time;
+			$chair_no = 1;
+		}elseif($check1 && $check2){
+			if(strtotime($check1->out_time) < strtotime($check2->out_time)){
+				$in_time = date("H:i:s",strtotime("+2 minutes",strtotime($check1->out_time)));
+				$chair_no = 1;
+			}else{
+				$in_time = date("H:i:s",strtotime("+2 minutes",strtotime($check2->out_time)));
+				$chair_no = 2;
+			}
+		}
 
 		$data['success'] = true;
-		$data['in_time'] = $in_time;
+		$data['in_time'] = date("h:i A",strtotime($in_time));
+		$data['chair_no'] = $chair_no;
 		return Response::json($data, 200, []);
 	}
 
@@ -108,13 +139,13 @@ class MassageController extends Controller {
 			}
 
 			$entry->name = $request->name;
-			$entry->in_time = date("h:i A",strtotime($request->in_time));
-			$entry->out_time = date("h:i A",strtotime($request->out_time));
+			$entry->in_time = date("H:i:s",strtotime($request->in_time));
+			$entry->out_time = date("H:i:s",strtotime($request->out_time));
 			$entry->paid_amount = $request->paid_amount;
 			$entry->pay_type = $request->pay_type;
 			$entry->remarks = $request->remarks;
 			$entry->time_period = $request->time_period;
-			$entry->chair_no = $request->char_no;
+			$entry->chair_no = $request->chair_no;
 			$entry->save();
 
 			
@@ -132,6 +163,8 @@ class MassageController extends Controller {
 	public function printPost($id = 0){
 
         $print_data = DB::table('massage_entries')->where('id', $id)->first();
+
+        dd($print_data);
         return view('admin.print_page_massage', compact('print_data'));
 
 		

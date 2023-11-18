@@ -36,6 +36,7 @@ app.controller('massageCtrl', function($scope , $http, $timeout , DBService) {
         DBService.postCall({}, '/api/massage/check-mc').then((data) => {
             if (data.success) {
                 $scope.formData.in_time = data.in_time;
+                $scope.formData.chair_no = data.chair_no;
                 $("#massageModal").modal("show");
             }
         });
@@ -91,7 +92,7 @@ app.controller('massageCtrl', function($scope , $http, $timeout , DBService) {
                     out_time:'',
                 };
                 $scope.init();
-                window.open(base_url+'/admin/massageb/print/'+data.id, '_blank');
+                window.open(base_url+'/admin/massage/print/'+data.id, '_blank');
 
             }
             $scope.loading = false;
