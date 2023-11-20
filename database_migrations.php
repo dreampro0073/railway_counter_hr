@@ -10,4 +10,12 @@ ALTER TABLE `sitting_entries` ADD `date` DATE NULL DEFAULT NULL AFTER `seat_no`;
 
 ALTER TABLE `massage_entries` ADD `name` VARCHAR(255) NULL DEFAULT NULL AFTER `unique_id`;
 
+ALTER TABLE `massage_entries` ADD `time_period` INT NOT NULL DEFAULT '0' AFTER `pay_type`;
+
+//DIpanshu 18Nov
+ALTER TABLE `massage_entries` CHANGE `in_time` `in_time` TIME NULL DEFAULT NULL, CHANGE `out_time` `out_time` TIME NULL DEFAULT NULL;
+
+ALTER TABLE `massage_entries` ADD `date` DATE NULL DEFAULT NULL AFTER `unique_id`;
+ALTER TABLE `sitting_entries` CHANGE `check_in` `check_in` TIME NULL DEFAULT NULL, CHANGE `check_out` `check_out` TIME NULL DEFAULT NULL;
+
 ?>

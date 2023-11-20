@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-md-4 form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" ng-model="formData.name">
+                            <input type="text" class="form-control" ng-model="formData.name" required>
                         </div>
                         <div class="col-md-4 form-group">
                             <label>In Time</label>
@@ -29,7 +29,7 @@
                             <label>Pay Type</label>
                             <select ng-model="formData.pay_type" class="form-control" required >
                                 <option value="">--select--</option>
-                                <option ng-repeat="item in pay_types" ng-value=@{{item.value}}>@{{ item.label}}</option>
+                                <option ng-repeat="item in pay_types" ng-value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
                         

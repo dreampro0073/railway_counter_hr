@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use DB;
 
-class Locker extends Model
+class Massage extends Model
 {
 
     protected $table = 'massage_entries';

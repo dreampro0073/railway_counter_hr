@@ -102,11 +102,11 @@
                         <td>Last Hour Total Collection</td>
                         <td><b>@{{ last_hour_total }}</b></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td colspan="2">
                             <a href="{{url('/admin/sitting/print-report')}}" class="btn btn-success btn-sm" target="_blank">Print Report</a>
                         </td>
-                    </tr>
+                    </tr> -->
                 </table>
             </div>
            

@@ -66,6 +66,7 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/edit-init',[MassageController::class,'editMassage']);
 		Route::post('/store',[MassageController::class,'store']);
 		Route::post('/change-time',[MassageController::class,'changeTime']);
+		Route::post('/check-mc',[MassageController::class,'checkMC']);
 	});
 	Route::group(['prefix'=>"locker"], function(){
 		Route::post('/init',[LockerController::class,'initLocker']);

@@ -2,7 +2,7 @@ app.controller('massageCtrl', function($scope , $http, $timeout , DBService) {
     $scope.loading = false;
     $scope.formData = {
         paid_amount:0,
-        time_period:0,
+        time_period:'',
         in_time:'',
         out_time:'',
     };
@@ -33,7 +33,15 @@ app.controller('massageCtrl', function($scope , $http, $timeout , DBService) {
         });
     }
     $scope.add = function(){
-        $("#massageModal").modal("show");
+        DBService.postCall({}, '/api/massage/check-mc').then((data) => {
+            if (data.success) {
+                $scope.formData.in_time = data.in_time;
+                $scope.formData.chair_no = data.chair_no;
+                $("#massageModal").modal("show");
+            }
+        });
+
+        // $("#massageModal").modal("show");
     }
 
     $scope.hideModal = () => {
@@ -78,12 +86,13 @@ app.controller('massageCtrl', function($scope , $http, $timeout , DBService) {
                 $("#massageModal").modal("hide");
                 $scope.entry_id = 0;
                 $scope.formData = {
-                    hours_occ:0,
+                    paid_amount:0,
+                    time_period:0,
                     in_time:'',
                     out_time:'',
                 };
                 $scope.init();
-                window.open(base_url+'/admin/print/'+data.id, '_blank');
+                window.open(base_url+'/admin/massage/print/'+data.id, '_blank');
 
             }
             $scope.loading = false;

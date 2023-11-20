@@ -57,8 +57,7 @@
 		<h5>
 			GSTIN: 18AAICN4763E1ZA
 		</h5>
-		
-		<div class="table-div" style="margin-bottom:4px;">
+		<div class="table-div">
 			<div class="w-50">
 				<span class="text">Bill No: <b>{{ $print_data->unique_id }}</b></span>
 			</div>
@@ -66,25 +65,38 @@
 				<span class="text">Date: <b><?php echo date("d-m-Y"); ?></b></span>
 			</div>
 		</div>
-		<div class="table-div" style="margin-bottom:4px;">
+		<div class="table-div">
 			<div class="w-50">
-				<span class="text">Name: <b>{{$print_data->name}}</b></span>
+				<span class="text">Locker No: <b>{{ $print_data->locker_id }}</b></span>
 			</div>
 			<div class="w-50">
-				<span class="text">Amount: <b>{{$print_data->paid_amount}}</b></span>
-			</div>
-		</div>
-		
-		
-		<div class="table-div" style="margin-bottom:4px;">
-			<div class="w-50">
-				<span class="text">In Time: <b>{{$print_data->in_time}}</b></span>
-			</div>
-			<div class="w-50">
-				<span class="text">Out Time: <b>{{$print_data->out_time}}</b></span>
+				
 			</div>
 		</div>
-		
+		<div class="table-div">
+			<div class="w-50">
+				<span class="text">Name: <b>{{ $print_data->name }}</b></span>
+			</div>
+			<div class="w-50">
+				<span class="text">Amount: <b>{{ $print_data->paid_amount }}</b></span>
+			</div>
+		</div>
+		<div class="table-div">
+			<div class="w-50">
+				<span class="text">PNR/ID No.: <b>{{$print_data->pnr_uid}}</b></span>
+			</div>
+			<div class="w-50">
+				<span class="text">Mobile:<b>{{$print_data->mobile_no}}</b></span>
+			</div>
+		</div>
+		<div class="table-div" style="margin-bottom: 20px;">
+			<div class="w-50">
+				<span class="text">In Time: <b>{{$print_data->check_in}}</b></span>
+			</div>
+			<div class="w-50">
+				<span class="text">Out Time: <b>{{$print_data->check_out}}</b></span>
+			</div>
+		</div>
 		<div style="margin-top: 20px;text-align: right;">
 			<span style="text-align:right;font-weight: bold;">E.&.O.E</span>
 		</div>
@@ -107,7 +119,6 @@
 			window.print();
 			document.body.innerHTML = originalContents; 
 		}
-		
 	</script>
 </body>
 </html>
