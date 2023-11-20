@@ -23,11 +23,10 @@
                     </div>
                     <div class="col-md-4 text-right">
                         <button type="button" ng-click="add()" class="btn  btn-primary" style="width: 70px;margin-top:28px;">Add</button>
-
                     </div>
                 </div>
-                
             </div>
+            <hr>
             <div>
                 <table class="table table-bordered table-striped" >
                     <thead style="background-color: rgba(0,0,0,.075);">

@@ -71,6 +71,13 @@ class LockerController extends Controller {
 	public function editLocker(Request $request){
 		$l_entry = Locker::where('id', $request->entry_id)->first();
 
+		if($l_entry){
+			$l_entry->mobile_no = $l_entry->mobile_no*1;
+			$l_entry->train_no = $l_entry->train_no*1;
+			$l_entry->pnr_uid = $l_entry->pnr_uid*1;
+			$l_entry->paid_amount = $l_entry->paid_amount*1;
+		}
+
 		$data['success'] = true;
 		$data['l_entry'] = $l_entry;
 		return Response::json($data, 200, []);
@@ -130,6 +137,7 @@ class LockerController extends Controller {
 			$entry->no_of_day = $request->no_of_day;
 			$entry->pay_type = $request->pay_type;
 			$entry->remarks = $request->remarks;
+			$entry->paid_amount = $request->paid_amount;
 			$entry->save();
 
 			$date = date("Y-m-d");
@@ -160,6 +168,33 @@ class LockerController extends Controller {
         return view('admin.print_page_locker', compact('print_data'));
 	}
 
+
+    public function checkoutInit(Request $request){
+    	$now_time = date('Y-m-d h:i:s', strtotime('+5 minutes'));
+
+    	$l_entry = Locker::where('id', $request->entry_id)->first();
+    	$checkout_time = date('Y-m-d H:i:s', strtotime($l_entry->checkout_date.$l_entry->check_out));
+
+    	if($checkout_time <= $now_time){
+    		$entry = Locker::find($request->entry_id);
+    		$entry->status = 1; 
+    		$entry->checkout_status = 1; 
+    		$entry->save();
+    		$data['success'] = false;
+    	} else {
+
+			if($l_entry){
+				$l_entry->mobile_no = $l_entry->mobile_no*1;
+				$l_entry->train_no = $l_entry->train_no*1;
+				$l_entry->pnr_uid = $l_entry->pnr_uid*1;
+				$l_entry->paid_amount = $l_entry->paid_amount*1;
+			}
+			$data['success'] = true;
+			$data['l_entry'] = $l_entry;
+		}
+
+		return Response::json($data, 200, []);
+    }
 
 
 }

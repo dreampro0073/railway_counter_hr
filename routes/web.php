@@ -72,5 +72,6 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/edit-init',[LockerController::class,'editLocker']);
 		Route::post('/store',[LockerController::class,'store']);
 		Route::post('/cal-check',[LockerController::class,'calCheck']);
+		Route::post('/checkout-init',[LockerController::class,'checkoutInit']);
 	});
 });

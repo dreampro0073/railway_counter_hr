@@ -244,7 +244,8 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
         name:'',
         mobile:"",
         paid_amount:0,
-        no_of_day:0,
+        no_of_day:'',
+        locker_id:'',
     };
 
     $scope.filter = {};
@@ -281,8 +282,24 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
             }
             
         });
+    }    
+
+    $scope.checkoutLoker = function(entry_id){
+        $scope.entry_id = entry_id;
+
+        if(confirm("Are you sure") == true){
+             DBService.postCall({entry_id : $scope.entry_id}, '/api/locker/checkout-init').then((data) => {
+                if (data.success) {
+                    $scope.formData = data.l_entry;
+                    $("#checkoutLokerModel").modal("show");
+                }
+                
+            });
+        }
     }
+
     $scope.add = function(){
+        $scope.entry_id = 0;
         $("#exampleModalCenter").modal("show");    
     }
 

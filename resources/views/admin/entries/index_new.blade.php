@@ -41,6 +41,7 @@
                     </div>
                 </form>
             </div>
+            <hr>
             <div>
                 <table class="table table-bordered table-striped" >
                     <thead style="background-color: rgba(0,0,0,.075);">

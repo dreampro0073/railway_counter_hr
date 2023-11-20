@@ -40,6 +40,7 @@
                     </div>
                 </form>
             </div>
+            <hr>
             <div>
                 <table class="table table-bordered table-striped" >
                     <thead style="background-color: rgba(0,0,0,.075);">
@@ -66,6 +67,7 @@
                             <td>@{{ item.pay_by }}</td>
                             <td>@{{ item.paid_amount }}</td>
                             <td>
+                            <a href="javascript:;" ng-click="checkoutLoker(item.id)" class="btn btn-danger btn-sm">Checkout</a>
                             <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a>
                             <a href="{{url('/admin/locker/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a></td>
                         </tr>
