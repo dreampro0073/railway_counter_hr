@@ -142,11 +142,16 @@ class LockerController extends Controller {
 			$entry->save();
 
 			$date = date("Y-m-d");
-			$checkout_date = date("Y-m-d",strtotime("+".$entry->no_of_day.' day',strtotime($date)));
+			$checkout_date = date("Y-m-d H:i:s",strtotime("+".$entry->no_of_day.' day',strtotime($date.$entry->check_out)));
+
 	        $entry->date = $date;
 	        $entry->checkout_date = $checkout_date;
 
+
 			$entry->save();
+
+			dd('hello');
+
 
 			DB::table('lockers')->where('id',$request->locker_id)->update([
 				'status' => 1,
@@ -171,33 +176,52 @@ class LockerController extends Controller {
 
 
     public function checkoutInit(Request $request){
-    	$now_time = date(strtotime('+5 minutes'));
+    	// strtotime('+5 minutes')
+    	$now_time = strtotime(date("Y-m-d H:i:s",strtotime("+5 minutes")));
 
     	$l_entry = Locker::where('id', $request->entry_id)->first();
     	$checkout_time = strtotime($l_entry->checkout_date);
-    	$now_time = strtotime(date("Y-m-d H:i:s"));
 
     	if($checkout_time > $now_time){
-    		$data['timeOut'] = false;
-    		$entry = Locker::find($request->entry_id);
-    		$entry->status = 1; 
-    		$entry->checkout_status = 1; 
-    		$entry->save();
-    		$data['success'] = true;
+    		// $data['timeOut'] = false;
+    		// $entry = Locker::find($request->entry_id);
+    		// $entry->status = 1; 
+    		// $entry->checkout_status = 1; 
+    		// $entry->save();
+    		// $data['success'] = true;
+    		// dd('no');
 
     	} else {
+    		$str_day = ($now_time - $checkout_time)/(60 * 60 * 24);
+    		$day =0;
+    		if($str_day > 0 && $str_day <= 1){
+    			$day = 1;
+    		}else if($str_day > 1 && $str_day <= 2){
+    			$day = 2;
+    		}if($str_day > 2 && $str_day <= 3){
+    			$day = 3;
+    		}if($str_day > 3 && $str_day <= 4){
+    			$day = 4;
+    		}if($str_day > 4 && $str_day <= 5){
+    			$day = 5;
+    		}if($str_day > 5 && $str_day <= 6){
+    			$day = 6;
+    		}if($str_day > 6 && $str_day <= 7){
+    			$day = 7;
+    		}if($str_day > 7 && $str_day <= 8){
+    			$day = 8;
+    		}if($str_day > 8 && $str_day <= 9){
+    			$day = 9;
+    		}if($str_day > 9 && $str_day <= 10){
+    			$day = 10;
+    		}
 
-    		$data['timeOut'] = true;
- 			$day_left_date = strtotime(date("Y-m-d H:i:s")) - strtotime($l_entry->checkout_date.$l_entry->check_out);
-
- 			dd(date("H:i:s",$day_left_date));
-
-			if($l_entry){
-				$l_entry->mobile_no = $l_entry->mobile_no*1;
-				$l_entry->train_no = $l_entry->train_no*1;
-				$l_entry->pnr_uid = $l_entry->pnr_uid*1;
-				$l_entry->paid_amount = $l_entry->paid_amount*1;
-			}
+			$l_entry->mobile_no = $l_entry->mobile_no*1;
+			$l_entry->train_no = $l_entry->train_no*1;
+			$l_entry->pnr_uid = $l_entry->pnr_uid*1;
+			$l_entry->paid_amount = $l_entry->paid_amount*1;
+			$l_entry->balance = $day*70;
+			$l_entry->total_balance = $l_entry->paid_amount+$l_entry->balance;
 			$data['l_entry'] = $l_entry;
 		}
 
