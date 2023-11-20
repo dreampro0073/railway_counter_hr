@@ -18,4 +18,7 @@ ALTER TABLE `massage_entries` CHANGE `in_time` `in_time` TIME NULL DEFAULT NULL,
 ALTER TABLE `massage_entries` ADD `date` DATE NULL DEFAULT NULL AFTER `unique_id`;
 ALTER TABLE `sitting_entries` CHANGE `check_in` `check_in` TIME NULL DEFAULT NULL, CHANGE `check_out` `check_out` TIME NULL DEFAULT NULL;
 
+
+ALTER TABLE `locker_entries` CHANGE `checkout_date` `checkout_date` TIMESTAMP NULL DEFAULT NULL;
+
 ?>

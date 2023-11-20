@@ -298,7 +298,7 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
 
         if(confirm("Are you sure") == true){
              DBService.postCall({entry_id : $scope.entry_id}, '/api/locker/checkout-init').then((data) => {
-                if (data.success) {
+                if (data.timeOut) {
                     $scope.formData = data.l_entry;
                     $("#checkoutLokerModel").modal("show");
                 }

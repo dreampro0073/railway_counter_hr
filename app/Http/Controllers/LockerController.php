@@ -45,7 +45,8 @@ class LockerController extends Controller {
 		}
 
 		$date_ar = [date("Y-m-d",strtotime('-1 day')),date("Y-m-d",strtotime("now"))];
-		$l_entries = $l_entries->orderBy('id', "DESC")->whereBetween('date',$date_ar)->get();
+		// $l_entries = $l_entries->orderBy('id', "DESC")->whereBetween('date',$date_ar)->get();
+		$l_entries = $l_entries->where('checkout_status', 0)->orderBy('id', "DESC")->take(100)->get();
 
 
 		$pay_types = Entry::payTypes();
@@ -170,18 +171,26 @@ class LockerController extends Controller {
 
 
     public function checkoutInit(Request $request){
-    	$now_time = date('Y-m-d h:i:s', strtotime('+5 minutes'));
+    	$now_time = date(strtotime('+5 minutes'));
 
     	$l_entry = Locker::where('id', $request->entry_id)->first();
-    	$checkout_time = date('Y-m-d H:i:s', strtotime($l_entry->checkout_date.$l_entry->check_out));
+    	$checkout_time = strtotime($l_entry->checkout_date);
+    	$now_time = strtotime(date("Y-m-d H:i:s"));
 
-    	if($checkout_time <= $now_time){
+    	if($checkout_time > $now_time){
+    		$data['timeOut'] = false;
     		$entry = Locker::find($request->entry_id);
     		$entry->status = 1; 
     		$entry->checkout_status = 1; 
     		$entry->save();
-    		$data['success'] = false;
+    		$data['success'] = true;
+
     	} else {
+
+    		$data['timeOut'] = true;
+ 			$day_left_date = strtotime(date("Y-m-d H:i:s")) - strtotime($l_entry->checkout_date.$l_entry->check_out);
+
+ 			dd(date("H:i:s",$day_left_date));
 
 			if($l_entry){
 				$l_entry->mobile_no = $l_entry->mobile_no*1;
@@ -189,7 +198,6 @@ class LockerController extends Controller {
 				$l_entry->pnr_uid = $l_entry->pnr_uid*1;
 				$l_entry->paid_amount = $l_entry->paid_amount*1;
 			}
-			$data['success'] = true;
 			$data['l_entry'] = $l_entry;
 		}
 

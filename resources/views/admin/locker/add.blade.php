@@ -126,57 +126,57 @@
                     <div class="row">
                         <div class="col-md-4 form-group">
                             <label>Name</label>
-                            <input type="text" ng-model="formData.name" class="form-control" required />
+                            <input type="text" ng-model="formData.name" class="form-control" readonly />
                         </div>
                         <div class="col-md-4 form-group">
                             <label>Mobile No.</label>
-                            <input type="number" ng-model="formData.mobile_no" class="form-control" required />
+                            <input type="number" ng-model="formData.mobile_no" class="form-control" readonly />
                         </div>
                         <div class="col-md-4 form-group">
                             <label>Address</label>
-                            <input type="text" ng-model="formData.address" class="form-control" required />
+                            <input type="text" ng-model="formData.address" class="form-control" readonly />
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4 form-group">
                             <label>Check In</label>
                            
-                            <input type="text" class="form-control" date-time-picker ng-model="formData.check_in" ng-change="calCheck()" dataobj="formData" dataitem="check_in" id="timePicker">
+                            <input type="text" class="form-control" date-time-picker ng-model="formData.check_in" ng-change="calCheck()" dataobj="formData" dataitem="check_in" id="timePicker" readonly />
                         </div>
                         <div class="col-md-4 form-group">
                             <label>PNR/UID</label>
-                            <input type="number" ng-model="formData.pnr_uid" class="form-control" required />
+                            <input type="number" ng-model="formData.pnr_uid" class="form-control" readonly />
                         </div>
                         
                         <div class="col-md-4 form-group">
                             <label>Train No.</label>
-                            <input type="number" ng-model="formData.train_no" class="form-control" required />
+                            <input type="number" ng-model="formData.train_no" class="form-control" readonly />
                         </div>
                     </div>
                   
                     <div class="row">  
                         <div class="col-md-3 form-group">
                             <label>No Of Days</label>
-                            <select ng-model="formData.no_of_day" class="form-control" required convert-to-number ng-change="calCheck()" >
+                            <select ng-model="formData.no_of_day" class="form-control" readonly convert-to-number ng-change="calCheck()" >
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in days" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
                         <div class="col-md-3 form-group" ng-if="entry_id == 0">
                             <label>Available Locker</label>
-                            <select ng-model="formData.locker_id" class="form-control" required convert-to-number>
+                            <select ng-model="formData.locker_id" class="form-control" readonly convert-to-number>
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in avail_lockers" value="@{{item.id}}">@{{ item.locker_no}}</option>
                             </select>
                         </div>
                         <div class="col-md-3 form-group" ng-if="entry_id != 0">
                             <label>Locker</label>
-                            <input type="text" ng-model="formData.locker_id" class="form-control" required readonly />
+                            <input type="text" ng-model="formData.locker_id" class="form-control"  readonly />
 
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Pay Type</label>
-                            <select ng-model="formData.pay_type" class="form-control" required  convert-to-number>
+                            <select ng-model="formData.pay_type" class="form-control"   convert-to-number>
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
