@@ -42,7 +42,8 @@ class Entry extends Model
         return $ar;
     }
 
-    public static function checkShift(){
+    public static function checkShift($type = 1){
+
         // $a_shift = "06:00:00-13:59:59";
         //$b_shift = "14:00:00-21:59:59";
         //$c_shift = "22:00:00-05:59:59";
@@ -55,12 +56,27 @@ class Entry extends Model
         $current_time = strtotime(date("H:i:s"));
 
         if($current_time > $a_shift && $current_time < $b_shift){
-            return "A";
+
+            if($type == 1){
+                return "A";
+            } else {
+                return "C";
+            }
+
         }else if($current_time > $b_shift && $current_time < $c_shift){
-            return "B";
+            if($type == 1){
+                return "B";
+            } else {
+                return "A";
+            }
         }else{
-            return "C";
+            if($type == 1){
+                return "C";
+            } else {
+                return "B";
+            }
         }
+
     }
 
     public static function totalShiftData(){
@@ -72,8 +88,9 @@ class Entry extends Model
         $last_hour_cash_total = 0;
         $last_hour_upi_total = 0;
 
-        $from_time = date('h:00:00 A');
-        $to_time = date('h:59:59 A');
+        $from_time = date('H:00:00');
+        $to_time = date('H:59:59');
+        // dd($from_time);
 
         if($check_shift != "C"){
             $total_shift_upi = Entry::where('date',date("Y-m-d"))->where('pay_type',2)->where('shift', $check_shift)->sum("paid_amount");
@@ -114,5 +131,51 @@ class Entry extends Model
 
         return $data;
     }
+
+    public static function totalPrevShiftData(){
+        $check_shift = Entry::checkShift(2);
+        
+        $total_shift_cash = 0;
+        $total_shift_upi = 0; 
+        if($check_shift == "B"){
+            if(date('H') > 6) {
+                $shift_date = date("Y-m-d"); 
+            } else {
+                $shift_date = date("Y-m-d",strtotime("-1 day"));   
+            }
+        }else{
+            $shift_date = date("Y-m-d");
+        }   
+
+
+        if($check_shift != "C"){
+
+            $total_shift_upi = Entry::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->sum("paid_amount");
+
+            $total_shift_cash = Entry::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->sum("paid_amount");  
+
+        }
+        
+        if($check_shift == "C"){
+
+            $shift_date = date("d-m-Y",strtotime("-1 day"));
+
+            $total_shift_upi = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',2)->sum("paid_amount");
+
+            $total_shift_cash = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',1)->sum("paid_amount"); 
+        }
+
+        $total_collection = $total_shift_upi + $total_shift_cash;
+
+        $data['total_shift_upi'] = $total_shift_upi;
+        $data['total_shift_cash'] = $total_shift_cash;
+        $data['total_collection'] = $total_collection;
+
+        $data['check_shift'] = $check_shift;
+        $data['shift_date'] = date('d-m-Y', strtotime($shift_date));
+
+        return $data;
+    }
+
 
 }

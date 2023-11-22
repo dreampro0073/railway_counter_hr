@@ -28,6 +28,13 @@
                         <li class="@if(isset($sidebar)) @if($sidebar == 'massage') active @endif @endif">
                             <a href="{{url('/admin/massage')}}"><i class="fa fa-medkit" aria-hidden="true"></i>Massage</a>
                         </li>
+                        
+                        <li class="@if(isset($sidebar)) @if($sidebar == 'shift') active @endif @endif">
+                            <a href="{{url('/admin/shift/current')}}"><i class="fa fa-industry" aria-hidden="true"></i>Shift Status</a>
+                        </li>
+                        <li class="@if(isset($sidebar)) @if($sidebar == 'pshift') active @endif @endif">
+                            <a href="{{url('/admin/shift/prev')}}"><i class="fa fa-industry" aria-hidden="true"></i>Previous Shift</a>
+                        </li>
                         <li>
                             <a href="{{url('/logout')}}"><i class="fa fa-sign-out"></i>Logout</a>
                         </li>

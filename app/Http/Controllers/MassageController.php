@@ -60,8 +60,8 @@ class MassageController extends Controller {
 
 		if($m_entry){
 			$m_entry->paid_amount = $m_entry->paid_amount*1;
-			$m_entry->in_time = date("h:i A",strtotime($m_entry->in_time));
-			$m_entry->out_time = date("h:i A",strtotime($m_entry->out_time));
+			$m_entry->in_time = date("H:i A",strtotime($m_entry->in_time));
+			$m_entry->out_time = date("H:i A",strtotime($m_entry->out_time));
 		}
 
 		$data['success'] = true;
@@ -73,9 +73,9 @@ class MassageController extends Controller {
 		$in_time = $request->in_time;
 		$time_period = $request->time_period;
 
-		$ss_time = strtotime(date("h:i A",strtotime($in_time)));
+		$ss_time = strtotime(date("H:i A",strtotime($in_time)));
 
-		$new_time = date("h:i A", strtotime('+'.$time_period.' minutes', $ss_time));
+		$new_time = date("H:i A", strtotime('+'.$time_period.' minutes', $ss_time));
 
 		$data['success'] = true;
 		$data['out_time'] = $new_time;
@@ -93,9 +93,11 @@ class MassageController extends Controller {
 		$now_time = date("H:i:s",strtotime("+2 minutes"));
 
 
-		$check1 = DB::table('massage_entries')->where('chair_no',1)->where('out_time','>',$now_time)->orderBy('id','DESC')->first();
+		$check1 = DB::table('massage_entries')->where('chair_no',1)->where('out_time','>',$now_time)->where('date',date("Y-m-d"))->orderBy('id','DESC')->first();
 
-		$check2= DB::table('massage_entries')->where('chair_no',2)->where('out_time','>',$now_time)->orderBy('id','DESC')->first();
+		$check2= DB::table('massage_entries')->where('chair_no',2)->where('out_time','>',$now_time)->where('date',date("Y-m-d"))->orderBy('id','DESC')->first();
+
+		// dd($check1);
 
 		if(!$check1 && !$check2){
 			$in_time = $now_time;
@@ -117,7 +119,7 @@ class MassageController extends Controller {
 		}
 
 		$data['success'] = true;
-		$data['in_time'] = date("h:i A",strtotime($in_time));
+		$data['in_time'] = date("H:i A",strtotime($in_time));
 		$data['chair_no'] = $chair_no;
 		return Response::json($data, 200, []);
 	}
@@ -125,6 +127,7 @@ class MassageController extends Controller {
 	public function store(Request $request){
 
 		$check_shift = Entry::checkShift();
+
 
 		$cre = [
 			'name'=>$request->name,
@@ -157,6 +160,9 @@ class MassageController extends Controller {
 			$entry->date = date("Y-m-d");
 			$entry->time_period = $request->time_period;
 			$entry->chair_no = $request->chair_no;
+			$entry->shift = $check_shift;
+			$entry->added_by = Auth::id();
+
 			$entry->save();
 
 			

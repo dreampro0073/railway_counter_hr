@@ -204,6 +204,7 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService) {
                     check_in:'',
                     check_out:'',
                 };
+                // window.location.reload();
                 $scope.init();
                 window.open(base_url+'/admin/sitting/print/'+data.id, '_blank');
 
@@ -232,12 +233,12 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService) {
 
             if($scope.formData.no_of_adults > 0){
                 $scope.formData.total_amount += 30 * $scope.formData.no_of_adults;
-                $scope.formData.total_amount += hours * 20 * $scope.formData.no_of_adults;
+                $scope.formData.total_amount += hours * 30 * $scope.formData.no_of_adults;
             }
 
             if($scope.formData.no_of_children > 0){
                 $scope.formData.total_amount += 20 * $scope.formData.no_of_children;
-                $scope.formData.total_amount +=  hours * 10 * $scope.formData.no_of_children;
+                $scope.formData.total_amount +=  hours * 20 * $scope.formData.no_of_children;
             }
 
         }
@@ -314,6 +315,7 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
 
     $scope.hideModal = () => {
         $("#exampleModalCenter").modal("hide");
+        $("#checkoutLokerModel").modal("hide");
         $scope.entry_id = 0;
         $scope.formData = {
             name:'',
@@ -329,6 +331,29 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
         DBService.postCall($scope.formData, '/api/locker/store').then((data) => {
             if (data.success) {
                 $("#exampleModalCenter").modal("hide");
+                $scope.entry_id = 0;
+                $scope.formData = {
+                    name:'',
+                    mobile:"",
+                    total_amount:0,
+                    paid_amount:0,
+                    balance_amount:0,
+                    hours_occ:0,
+                    check_in:'',
+                    check_out:'',
+                };
+                $scope.init();
+                // window.open(base_url+'/admin/locker/print/'+data.id, '_blank');
+
+            }
+            $scope.loading = false;
+        });
+    }
+    $scope.onCheckOut = function () {
+        $scope.loading = true;
+        DBService.postCall($scope.formData, '/api/locker/checkout-store').then((data) => {
+            if (data.success) {
+                $("#checkoutLokerModel").modal("hide");
                 $scope.entry_id = 0;
                 $scope.formData = {
                     name:'',
@@ -368,3 +393,54 @@ app.controller('lockerCtrl', function($scope , $http, $timeout , DBService) {
         $scope.formData.paid_amount = amount;
     }
 });
+
+app.controller('shiftCtrl', function($scope , $http, $timeout , DBService) {
+    $scope.loading = false;
+
+    $scope.init = function () {
+        $scope.loading = false;
+
+        DBService.postCall($scope.filter, '/api/shift/init').then((data) => {
+            if (data.success) {                 
+                $scope.shitting_data = data.shitting_data ; 
+                $scope.massage_data = data.massage_data ; 
+                $scope.locker_data = data.locker_data ; 
+
+                $scope.total_shift_upi = data.total_shift_upi ; 
+                $scope.total_shift_cash = data.total_shift_cash ; 
+                $scope.total_collection = data.total_collection ; 
+
+                $scope.last_hour_upi_total = data.last_hour_upi_total ; 
+                $scope.last_hour_cash_total = data.last_hour_cash_total ; 
+                $scope.last_hour_total = data.last_hour_total ;
+
+                $scope.check_shift = data.check_shift ; 
+                $scope.shift_date = data.shift_date ; 
+            }
+            $scope.loading = true;
+        });
+    }    
+
+    $scope.prevInit = function () {
+        $scope.loading = false;
+
+        DBService.postCall($scope.filter, '/api/shift/prev-init').then((data) => {
+            if (data.success) {                 
+                $scope.shitting_data = data.shitting_data ; 
+                $scope.massage_data = data.massage_data ; 
+                $scope.locker_data = data.locker_data ; 
+
+                $scope.total_shift_upi = data.total_shift_upi ; 
+                $scope.total_shift_cash = data.total_shift_cash ; 
+                $scope.total_collection = data.total_collection ; 
+                
+                $scope.check_shift = data.check_shift ; 
+                $scope.shift_date = data.shift_date ; 
+            }
+            $scope.loading = true;
+        });
+    }
+    
+});
+
+

@@ -91,10 +91,10 @@
 		</div>
 		<div class="table-div" style="margin-bottom: 20px;">
 			<div class="w-50">
-				<span class="text">In Time: <b>{{$print_data->check_in}}</b></span>
+				<span class="text">In Time: <b>{{date("d-m-Y",strtotime($print_data->date))}}, {{date("h:i A",strtotime($print_data->check_in))}}</b></span>
 			</div>
 			<div class="w-50">
-				<span class="text">Out Time: <b>{{$print_data->check_out}}</b></span>
+				<span class="text">Out Time: <b>{{date("d-m-Y, h:i A",strtotime($print_data->checkout_date))}}</b></span>
 			</div>
 		</div>
 		<div style="margin-top: 20px;text-align: right;">

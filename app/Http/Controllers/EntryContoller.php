@@ -176,6 +176,8 @@ class EntryContoller extends Controller {
 	           	$date = date("Y-m-d",strtotime("-1 day"));
 	        }
 	        $entry->date = $date;
+			$entry->added_by = Auth::id();
+	        
 			$entry->save();
 
 
@@ -214,22 +216,17 @@ class EntryContoller extends Controller {
 
         $print_data = DB::table('sitting_entries')->where('id', $id)->first();
 		$print_data->type = "silip";
-        $print_data->total_member = $print_data->no_of_adults + $print_data->no_of_children + $print_data->no_of_baby_staff;
-        $print_data->adult_first_hour_amount = 0;
-        $print_data->children_first_hour_amount = 0;
-        $hours = $print_data->hours_occ - 1;
-        $print_data->adult_other_hour_amount = 0;
-        $print_data->children_other_hour_amount = 0; 
-
-        if($print_data->hours_occ > 0) {
-            $print_data->adult_first_hour_amount = $print_data->no_of_adults * 30;
-            $print_data->children_first_hour_amount = $print_data->no_of_children * 20;
-        }      
         
-        if($hours > 0){
-            $print_data->adult_other_hour_amount = $print_data->no_of_adults * 20 * $hours;
-            $print_data->children_other_hour_amount = $print_data->no_of_children * 10 * $hours; 
+        $print_data->total_member = $print_data->no_of_adults + $print_data->no_of_children + $print_data->no_of_baby_staff;
+        $print_data->adult_amount = 0;
+        $print_data->children_amount = 0;
+        $hours = $print_data->hours_occ;
+
+        if($hours > 0) {
+            $print_data->adult_amount = $print_data->no_of_adults * 30 * $hours;
+            $print_data->children_amount = $print_data->no_of_children * 20 * $hours;
         }
+              
 		return view('admin.print_sitting',compact('print_data'));
 	}
 

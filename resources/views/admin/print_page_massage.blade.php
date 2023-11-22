@@ -75,13 +75,12 @@
 			</div>
 		</div>
 		
-		
 		<div class="table-div" style="margin-bottom:4px;">
 			<div class="w-50">
-				<span class="text">In Time: <b>{{$print_data->in_time}}</b></span>
+				<span class="text">Time: <b>{{date("h:i A",strtotime($print_data->in_time))}} to {{date("h:i A",strtotime($print_data->out_time))}}</b></span>
 			</div>
 			<div class="w-50">
-				<span class="text">Out Time: <b>{{$print_data->out_time}}</b></span>
+				<span class="text">Chair: <b>{{$print_data->chair_no}}</b> </span>
 			</div>
 		</div>
 		

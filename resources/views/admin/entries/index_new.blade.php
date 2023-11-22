@@ -76,7 +76,7 @@
                 </table>
                 <div ng-if="entries.length == 0" class="alert alert-danger">Data Not Found!</div>
             </div>  
-            <div style="width:300px;">
+            <!-- <div style="width:300px;">
                 <table class="table table-bordered table-striped" style="width:100%;">
                     <tr>
                         <td>Shift UPI Collection</td>
@@ -102,13 +102,8 @@
                         <td>Last Hour Total Collection</td>
                         <td><b>@{{ last_hour_total }}</b></td>
                     </tr>
-                    <!-- <tr>
-                        <td colspan="2">
-                            <a href="{{url('/admin/sitting/print-report')}}" class="btn btn-success btn-sm" target="_blank">Print Report</a>
-                        </td>
-                    </tr> -->
                 </table>
-            </div>
+            </div> -->
            
         </div>
     </div>

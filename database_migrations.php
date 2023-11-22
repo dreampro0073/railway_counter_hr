@@ -21,4 +21,11 @@ ALTER TABLE `sitting_entries` CHANGE `check_in` `check_in` TIME NULL DEFAULT NUL
 
 ALTER TABLE `locker_entries` CHANGE `checkout_date` `checkout_date` TIMESTAMP NULL DEFAULT NULL;
 
+ALTER TABLE `locker_entries` ADD `penality` INT NULL DEFAULT NULL AFTER `paid_amount`;
+
+CREATE TABLE `locker_penalty` ( `id` INT NOT NULL , `locker_entry_id` INT NULL DEFAULT NULL , `penalty_amount` VARCHAR(10) NULL DEFAULT NULL , `shift` VARCHAR(10) NULL DEFAULT NULL , `created_at` TIMESTAMP NULL DEFAULT NULL , `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE = InnoDB;
+
+ALTER TABLE `locker_penalty` ADD `pay_type` TINYINT(2) NULL DEFAULT NULL AFTER `penalty_amount`;
+ALTER TABLE `locker_penalty` ADD `date` DATE NULL DEFAULT NULL AFTER `shift`;
+
 ?>

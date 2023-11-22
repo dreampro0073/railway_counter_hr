@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-4 form-group">
                             <label>Address</label>
-                            <input type="text" ng-model="formData.address" class="form-control" required />
+                            <input type="text" ng-model="formData.address" class="form-control" />
                         </div>
                     </div>
                     <div class="row">
@@ -44,7 +44,7 @@
                         
                         <div class="col-md-4 form-group">
                             <label>Train No.</label>
-                            <input type="number" ng-model="formData.train_no" class="form-control" required />
+                            <input type="number" ng-model="formData.train_no" class="form-control" />
                         </div>
                     </div>
                   
@@ -121,8 +121,7 @@
                 
             </div>
             <div class="modal-body">
-                <form name="myForm" novalidate="novalidate" ng-submit="onSubmit(myForm.$valid)">
-
+                <form name="myForm" novalidate="novalidate" ng-submit="onCheckOut(myForm.$valid)">
                     <div class="row">
                         <div class="col-md-4 form-group">
                             <label>Name</label>
@@ -181,9 +180,18 @@
                                 <option ng-repeat="item in pay_types" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
                         </div>
-                        <div class="col-md-3 form-group" ng-if="formData.no_of_day !=''">
+                        <div class="col-md-3 form-group">
+                            <label>Total Amount</label>
+                            <input type="number" ng-model="formData.total_balance" class="form-control" readonly />
+                        </div> 
+
+                        <div class="col-md-3 form-group" >
                             <label>Paid Amount</label>
                             <input type="number" ng-model="formData.paid_amount" class="form-control" readonly />
+                        </div> 
+                        <div class="col-md-3 form-group">
+                            <label>Balance Amount</label>
+                            <input type="number" ng-model="formData.balance" class="form-control" readonly />
                         </div>                        
                         
                         <div class="col-md-4 form-group">
@@ -198,7 +206,7 @@
                     </div>
                     <div class="pt-4">
                         <button type="submit" class="btn btn-primary" ng-disabled="loading">
-                            <span ng-if="!loading">Submit</span>
+                            <span ng-if="!loading">Collect</span>
                             <span ng-if="loading">Loading...</span>
                         </button> 
                     </div>  

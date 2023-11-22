@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EntryContoller;
 use App\Http\Controllers\MassageController;
 use App\Http\Controllers\LockerController;
+use App\Http\Controllers\ShiftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,13 @@ Route::group(['middleware'=>'auth'],function(){
 			Route::get('/',[LockerController::class,'index']);
 			Route::get('/print/{id?}', [LockerController::class,'printPost']);
 			
+		});		
+
+		Route::group(['prefix'=>"shift"], function(){
+			Route::get('/current',[ShiftController::class,'index']);
+			Route::get('/prev',[ShiftController::class,'prevIndex']);
+			
+			
 		});
 	});
 });
@@ -74,5 +82,10 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/store',[LockerController::class,'store']);
 		Route::post('/cal-check',[LockerController::class,'calCheck']);
 		Route::post('/checkout-init',[LockerController::class,'checkoutInit']);
+		Route::post('/checkout-store',[LockerController::class,'checkoutStore']);
+	});
+	Route::group(['prefix'=>"shift"], function(){
+		Route::post('/init',[ShiftController::class,'init']);
+		Route::post('/prev-init',[ShiftController::class,'prevInit']);
 	});
 });
