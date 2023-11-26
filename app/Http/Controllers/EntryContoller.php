@@ -170,11 +170,7 @@ class EntryContoller extends Controller {
 			$check_in_time = strtotime($entry->check_in);
         	$current_time = strtotime(date("H:i:s"));
         	
-        	$date = date("Y-m-d");
-
-        	if($current_time > strtotime("00:00:00") && $current_time < strtotime("06:00:00")){
-	           	$date = date("Y-m-d",strtotime("-1 day"));
-	        }
+        	$date = Entry::getPDate();
 	        $entry->date = $date;
 			$entry->added_by = Auth::id();
 	        

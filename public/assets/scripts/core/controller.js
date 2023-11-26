@@ -204,7 +204,6 @@ app.controller('sittingCtrl', function($scope , $http, $timeout , DBService) {
                     check_in:'',
                     check_out:'',
                 };
-                // window.location.reload();
                 $scope.init();
                 window.open(base_url+'/admin/sitting/print/'+data.id, '_blank');
 

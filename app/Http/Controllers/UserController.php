@@ -54,7 +54,7 @@ class UserController extends Controller {
 			
             if(Auth::attempt($cre)){
                 
-                return Redirect::to('/admin/dashboard');
+                return Redirect::to('/admin/sitting');
 
 			} else {
                 return Redirect::back()->withInput()->with('failure','Invalid username or password');

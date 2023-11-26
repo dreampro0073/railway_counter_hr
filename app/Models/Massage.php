@@ -3,7 +3,9 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-use DB, App\Models\Entry;
+use DB;
+use App\Models\Entry;
+
 
 class Massage extends Model
 {
@@ -23,26 +25,37 @@ class Massage extends Model
         $to_time = date('H:59:59');
 
         if($check_shift != "C"){
-            $total_shift_upi = Massage::where('date',date("Y-m-d"))->where('pay_type',2)->where('shift', $check_shift)->sum("paid_amount");
+            $shift_date = date("Y-m-d");   
+   
+            $total_shift_upi = Massage::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->sum("paid_amount");
 
-            $total_shift_cash = Massage::where('date',date("Y-m-d"))->where('pay_type',1)->where('shift', $check_shift)->sum("paid_amount");  
+            $total_shift_cash = Massage::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->sum("paid_amount");  
 
-            $last_hour_upi_total = Massage::where('date',date("Y-m-d"))->where('pay_type',2)->where('shift', $check_shift)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount");
+            $last_hour_upi_total = Massage::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount");
 
-            $last_hour_cash_total = Massage::where('date',date("Y-m-d"))->where('pay_type',1)->where('shift', $check_shift)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount"); 
+            $last_hour_cash_total = Massage::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount"); 
+
+
             $shift_date = date("d-m-Y");   
+
 
         }
         
         if($check_shift == "C"){
 
-            $total_shift_upi = Massage::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',2)->sum("paid_amount");
+            // $p_date = date("Y-m-d",strtotime("-1 day"));
 
-            $total_shift_cash = Massage::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',1)->sum("paid_amount");
-            $last_hour_upi_total = Massage::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',2)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount"); 
-            $last_hour_cash_total = Massage::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',1)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount");
+            $p_date = Entry::getPDate();
+            $shift_date = date("d-m-Y",strtotime($p_date));
 
-            $shift_date = date("d-m-Y",strtotime("-1 day"));
+
+            $total_shift_upi = Massage::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',2)->sum("paid_amount");
+
+            $total_shift_cash = Massage::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',1)->sum("paid_amount");
+
+            $last_hour_upi_total = Massage::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',2)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount"); 
+
+            $last_hour_cash_total = Massage::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',1)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount");
             
         }
 

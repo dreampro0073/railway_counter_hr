@@ -157,11 +157,16 @@ class MassageController extends Controller {
 			$entry->paid_amount = $request->paid_amount;
 			$entry->pay_type = $request->pay_type;
 			$entry->remarks = $request->remarks;
-			$entry->date = date("Y-m-d");
+			// $entry->date = date("Y-m-d");
 			$entry->time_period = $request->time_period;
 			$entry->chair_no = $request->chair_no;
 			$entry->shift = $check_shift;
 			$entry->added_by = Auth::id();
+
+		
+        	$date = Entry::getPDate();
+	        $entry->date = $date;
+
 
 			$entry->save();
 
