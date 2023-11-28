@@ -87,4 +87,35 @@ class ShiftController extends Controller {
 		return Response::json($data, 200, []);
 	}
 
+	public function print($type =1){
+		$current_shift = Entry::checkShift($type);
+
+		if($type == 1){
+
+
+			$shitting_data = Entry::totalShiftData();
+			$massage_data = Massage::totalShiftData();
+			$locker_data = Locker::totalShiftData();
+		}else{
+			$shitting_data = Entry::totalPrevShiftData();
+			$massage_data = Massage::totalPrevShiftData();
+			$locker_data = Locker::totalPrevShiftData();
+		}
+
+	
+		
+		$total_shift_upi = $shitting_data['total_shift_upi'] + $massage_data['total_shift_upi'] + $locker_data['total_shift_upi'];
+        $total_shift_cash = $shitting_data['total_shift_cash'] + $massage_data['total_shift_cash'] + $locker_data['total_shift_cash'];
+        $total_collection = $shitting_data['total_collection'] + $massage_data['total_collection'] + $locker_data['total_collection'];
+        
+        return view('admin.print_shift',[
+        	'total_shift_upi'=>$total_shift_upi,
+        	'total_shift_cash'=>$total_shift_cash,
+        	'total_collection'=>$total_collection,
+        	'shitting_data'=>$shitting_data,
+        	'massage_data'=>$massage_data,
+        	'locker_data'=>$locker_data,
+        ]);
+	}
+
 }

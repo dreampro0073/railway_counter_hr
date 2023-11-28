@@ -27,27 +27,19 @@
                             <input type="number" ng-model="formData.mobile_no" class="form-control" required />
                         </div>
                         <div class="col-md-4 form-group">
-                            <label>Address</label>
-                            <input type="text" ng-model="formData.address" class="form-control" required />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 form-group">
-                            <label>Check In</label>
-                            <!-- <input type="text" class="form-control" date-time-picker ng-model="formData.check_in" ng-change="calCheck()" dataobj="formData" dataitem="check_in" id="check_in"> -->
-                            <input type="text" class="form-control" date-time-picker ng-model="formData.check_in" ng-change="calCheck()" dataobj="formData" dataitem="check_in" id="timePicker">
-                        </div>
-                        <div class="col-md-4 form-group">
                             <label>PNR/UID</label>
-                            <input type="number" ng-model="formData.pnr_uid" class="form-control" required />
+                            <input type="number" ng-model="formData.pnr_uid" class="form-control"  />
                         </div>
-                        
-                        <div class="col-md-4 form-group">
-                            <label>Train No.</label>
-                            <input type="number" ng-model="formData.train_no" class="form-control" required />
-                        </div>
+                       
+                      
                     </div>
+                   
                     <div class="row">
+                         <div class="col-md-4 form-group" ng-if="formData.id > 0">
+                            <label>Check In</label>
+                           
+                            <input type="text" class="form-control" ng-model="formData.check_in" readonly>
+                        </div>
                         <div class="col-md-3 form-group">
                             <label>No of Adults</label>
                             <input type="number" ng-model="formData.no_of_adults" ng-change="changeAmount()" class="form-control" />
@@ -93,11 +85,10 @@
                             <label>Balance Amount</label>
                             <input type="number" ng-model="formData.balance_amount" class="form-control" readonly />
                         </div>
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-4 form-group" ng-if="formData.id > 0">
                             <label>Check Out</label>
                             <input type="text" class="form-control" ng-model="formData.check_out" readonly>
                         </div>
-                        
                         <div class="col-md-12 form-group">
                             <label>Remarks</label>
                             <textarea ng-model="formData.remarks" class="form-control"></textarea>

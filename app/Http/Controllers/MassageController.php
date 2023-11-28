@@ -37,13 +37,20 @@ class MassageController extends Controller {
 		}	
 
 
-		$date_ar = [date("Y-m-d",strtotime('-1 day')),date("Y-m-d",strtotime("now"))];
-		$m_entries = $m_entries	->orderBy('id', "DESC")->whereBetween('date',$date_ar)->orderBy('id','DESC')->get();
+		
+		if(Auth::id() != 1){
+			$m_entries = $m_entries->where('deleted',0);
+		}
+		$m_entries = $m_entries->orderBy('id','DESC')->get();
 
 		$show_pay_types = Entry::showPayTypes();
 		if(sizeof($m_entries) > 0){
 			foreach ($m_entries as $item) {
 				$item->pay_by = isset($item->pay_type)?$show_pay_types[$item->pay_type]:'';
+
+				$item->delete_time = date("d-m-Y h:i A",strtotime($item->delete_time));
+
+
 			}
 
 		}
@@ -71,15 +78,19 @@ class MassageController extends Controller {
 	public function changeTime(Request $request){
 		
 		$in_time = $request->in_time;
+
+
 		$time_period = $request->time_period;
 
-		$ss_time = strtotime(date("H:i A",strtotime($in_time)));
+		$ss_time = strtotime(date("h:i A",strtotime($in_time)));
 
-		$new_time = date("H:i A", strtotime('+'.$time_period.' minutes', $ss_time));
+		$new_time = date("h:i A", strtotime('+'.$time_period.' minutes', $ss_time));
 
 		$data['success'] = true;
 		$data['out_time'] = $new_time;
 		return Response::json($data, 200, []);
+
+		
 	}
 	public function checkMC(Request $request){
 			
@@ -119,7 +130,7 @@ class MassageController extends Controller {
 		}
 
 		$data['success'] = true;
-		$data['in_time'] = date("H:i A",strtotime($in_time));
+		$data['in_time'] = date("h:i A",strtotime($in_time));
 		$data['chair_no'] = $chair_no;
 		return Response::json($data, 200, []);
 	}
@@ -163,6 +174,9 @@ class MassageController extends Controller {
 			$entry->shift = $check_shift;
 			$entry->added_by = Auth::id();
 
+			$date = Entry::getPDate();
+	        $entry->date = $date;
+
 			$entry->save();
 
 			
@@ -202,6 +216,21 @@ class MassageController extends Controller {
  //        $dompdf->render();
  //        $dompdf->stream(date("dmY",strtotime("now")).'.pdf',array("Attachment" => false));
  //    }
+
+
+	public function delete($id){
+    	DB::table('massage_entries')->where('id',$id)->update([
+    		'deleted' => 1,
+    		'delete_by' => Auth::id(),
+    		'delete_time' => date("Y-m-d H:i:s"),
+
+    	]);
+
+    	$data['success'] = true;
+    	$data['message'] = "Successfully";
+		
+		return Response::json($data, 200, []);
+    }
 
 
 }

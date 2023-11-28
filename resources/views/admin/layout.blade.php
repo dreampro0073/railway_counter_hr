@@ -32,9 +32,9 @@
                         <li class="@if(isset($sidebar)) @if($sidebar == 'shift') active @endif @endif">
                             <a href="{{url('/admin/shift/current')}}"><i class="fa fa-industry" aria-hidden="true"></i>Shift Status</a>
                         </li>
-                        <li class="@if(isset($sidebar)) @if($sidebar == 'pshift') active @endif @endif">
+                      <!--   <li class="@if(isset($sidebar)) @if($sidebar == 'pshift') active @endif @endif">
                             <a href="{{url('/admin/shift/prev')}}"><i class="fa fa-industry" aria-hidden="true"></i>Previous Shift</a>
-                        </li>
+                        </li> -->
                         <li>
                             <a href="{{url('/logout')}}"><i class="fa fa-sign-out"></i>Logout</a>
                         </li>
@@ -43,6 +43,7 @@
                     
                 </div>
                 <div class="" style="padding-left:250px;width: 100%;">
+                    <div style="text-align:right;padding-top:8px;padding-bottom: 8px;padding-right:24px;margin: 0 -15px;background: #fff;box-shadow:0 0 2px rgba(0,0,0,0.5);"><strong>{{Auth::user()->name}}</strong></div>
                     <div style="padding:0 20px;"> 
                         @yield('main')
                     </div>
@@ -59,7 +60,6 @@
     <script type="text/javascript" src="{{url('assets/scripts/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{url('bootstrap3/js/bootstrap.min.js')}}"></script>
     <script type="text/javascript" src="{{url('date/bootstrapp-time.min.js')}}"></script>
-
     <script type="text/javascript" src="{{url('assets/scripts/angular.min.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/scripts/jcs-auto-validate.js')}}" ></script>
     <script type="text/javascript" src="{{url('assets/js/custom.js')}}"></script>

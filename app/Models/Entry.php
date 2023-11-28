@@ -54,6 +54,7 @@ class Entry extends Model
 
 
         $current_time = strtotime(date("H:i:s"));
+        // $current_time = "03:09:00";
 
         if($current_time > $a_shift && $current_time < $b_shift){
 
@@ -93,26 +94,35 @@ class Entry extends Model
         // dd($from_time);
 
         if($check_shift != "C"){
-            $total_shift_upi = Entry::where('date',date("Y-m-d"))->where('pay_type',2)->where('shift', $check_shift)->sum("paid_amount");
 
-            $total_shift_cash = Entry::where('date',date("Y-m-d"))->where('pay_type',1)->where('shift', $check_shift)->sum("paid_amount");  
+            $shift_date = date("Y-m-d");   
 
-            $last_hour_upi_total = Entry::where('date',date("Y-m-d"))->where('pay_type',2)->where('shift', $check_shift)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount");
 
-            $last_hour_cash_total = Entry::where('date',date("Y-m-d"))->where('pay_type',1)->where('shift', $check_shift)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount"); 
+            $total_shift_upi = Entry::where('date',$shift_date)->where('pay_type',2)->where('deleted',0)->where('shift', $check_shift)->sum("paid_amount");
+
+            $total_shift_cash = Entry::where('date',$shift_date)->where('pay_type',1)->where('deleted',0)->where('shift', $check_shift)->sum("paid_amount");  
+
+            $last_hour_upi_total = Entry::where('date',$shift_date)->where('pay_type',2)->where('deleted',0)->where('shift', $check_shift)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount");
+
+            $last_hour_cash_total = Entry::where('date',$shift_date)->where('pay_type',1)->where('deleted',0)->where('shift', $check_shift)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount"); 
+
             $shift_date = date("d-m-Y");   
 
+            
         }
         
         if($check_shift == "C"){
 
-            $total_shift_upi = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',2)->sum("paid_amount");
+            $p_date = Entry::getPDate();
+            $shift_date = date("d-m-Y",strtotime($p_date));
 
-            $total_shift_cash = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',1)->sum("paid_amount");
-            $last_hour_upi_total = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',2)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount"); 
-            $last_hour_cash_total = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',1)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount");
+            $total_shift_upi = Entry::where('date',$p_date)->where('deleted',0)->where('shift', $check_shift)->where('pay_type',2)->sum("paid_amount");
 
-            $shift_date = date("d-m-Y",strtotime("-1 day"));
+            $total_shift_cash = Entry::where('date',$p_date)->where('deleted',0)->where('shift', $check_shift)->where('pay_type',1)->sum("paid_amount");
+
+
+            $last_hour_upi_total = Entry::where('date',$p_date)->where('deleted',0)->where('shift', $check_shift)->where('pay_type',2)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount"); 
+            $last_hour_cash_total = Entry::where('date',$p_date)->where('deleted',0)->where('shift', $check_shift)->where('pay_type',1)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount");
             
         }
 
@@ -150,9 +160,9 @@ class Entry extends Model
 
         if($check_shift != "C"){
 
-            $total_shift_upi = Entry::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->sum("paid_amount");
+            $total_shift_upi = Entry::where('date',$shift_date)->where('pay_type',2)->where('deleted',0)->where('shift', $check_shift)->sum("paid_amount");
 
-            $total_shift_cash = Entry::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->sum("paid_amount");  
+            $total_shift_cash = Entry::where('date',$shift_date)->where('pay_type',1)->where('deleted',0)->where('shift', $check_shift)->sum("paid_amount");  
 
         }
         
@@ -160,9 +170,9 @@ class Entry extends Model
 
             $shift_date = date("d-m-Y",strtotime("-1 day"));
 
-            $total_shift_upi = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',2)->sum("paid_amount");
+            $total_shift_upi = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('deleted',0)->where('shift', $check_shift)->where('pay_type',2)->sum("paid_amount");
 
-            $total_shift_cash = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('shift', $check_shift)->where('pay_type',1)->sum("paid_amount"); 
+            $total_shift_cash = Entry::whereBetween('date',[date("Y-m-d",strtotime("-1 day")),date("Y-m-d")])->where('deleted',0)->where('shift', $check_shift)->where('pay_type',1)->sum("paid_amount"); 
         }
 
         $total_collection = $total_shift_upi + $total_shift_cash;
@@ -175,6 +185,18 @@ class Entry extends Model
         $data['shift_date'] = date('d-m-Y', strtotime($shift_date));
 
         return $data;
+    }
+
+    public function getPDate(){
+        $p_date = date("Y-m-d");
+        $current_time = strtotime(date("H:i:s"));
+        // $p_date = date("2023-11-27");
+        // $current_time = strtotime("02:09:00");
+
+        if($current_time > strtotime("00:00:00") && $current_time < strtotime("06:00:00")){
+            $p_date = date("Y-m-d",strtotime("-1 day",strtotime($p_date)));
+        }
+        return $p_date;
     }
 
 

@@ -38,10 +38,11 @@
                             <th>Pay Type</th>
                             <th>Total Amount</th>
                             <th>#</th>
+                            <th>#</th>
                         </tr>
                     </thead>
                     <tbody ng-if="m_entries.length > 0">
-                        <tr ng-repeat="item in m_entries">
+                        <tr ng-repeat="item in m_entries" ng-class="{'my_class': item.deleted == 1}">
                             <td>@{{ $index+1 }}</td>
                            
                             <td>@{{ item.unique_id }}</td>
@@ -49,14 +50,25 @@
                             <td>@{{ item.pay_by }}</td>
                             <td>@{{ item.paid_amount }}</td>
                             <td>
+                                <div ng-if="item.deleted == 1">
+                                    <span >@{{item.username}},</span>
+                                    <span >@{{item.shit}}, </span>
+                                    <span >@{{item.delete_time}}</span>
+                                </div>
+                            </td>
+                            <td>
                                 <!-- <a href="javascript:;" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</a> -->
                                 <!-- <button type="button" ng-click="edit(item.id)" class="btn btn-warning btn-sm">Edit</button> -->
                                 <a href="{{url('/admin/massage/print')}}/@{{item.id}}" class="btn btn-success btn-sm" target="_blank">Print</a>
+                                @if(Auth::id() !=1)
+                                <button type="button" ng-click="delete(item.id)" class="btn btn-danger btn-sm">Delete</button>
+                                @endif
+
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div ng-if="entries.length == 0" class="alert alert-danger">Data Not Found!</div>
+                <div ng-if="m_entries.length == 0" class="alert alert-danger">Data Not Found!</div>
             </div> 
            
         </div>

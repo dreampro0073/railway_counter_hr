@@ -20,6 +20,8 @@ use Dompdf\Options;
 class UserController extends Controller {
 
     public function index(){
+
+
         return Redirect::to('admin/dashboard');
         
         return view('index');
@@ -37,9 +39,7 @@ class UserController extends Controller {
         $start_date = "02-01-2024";
     }
 
-	public function login(){
-    
-        
+	public function login(){    
 		return view('login');
 	}
 
@@ -54,7 +54,7 @@ class UserController extends Controller {
 			
             if(Auth::attempt($cre)){
                 
-                return Redirect::to('/admin/dashboard');
+                return Redirect::to('/admin/sitting');
 
 			} else {
                 return Redirect::back()->withInput()->with('failure','Invalid username or password');

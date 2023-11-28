@@ -55,6 +55,7 @@ Route::group(['middleware'=>'auth'],function(){
 		Route::group(['prefix'=>"shift"], function(){
 			Route::get('/current',[ShiftController::class,'index']);
 			Route::get('/prev',[ShiftController::class,'prevIndex']);
+			Route::get('/print/{type}',[ShiftController::class,'print']);
 			
 			
 		});
@@ -67,6 +68,8 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/edit-init',[EntryContoller::class,'editEntry']);
 		Route::post('/store',[EntryContoller::class,'store']);
 		Route::post('/cal-check',[EntryContoller::class,'calCheck']);
+		Route::get('/delete/{id}',[EntryContoller::class,'delete']);
+		
 	});
 
 	Route::group(['prefix'=>"massage"], function(){
@@ -75,6 +78,8 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/store',[MassageController::class,'store']);
 		Route::post('/change-time',[MassageController::class,'changeTime']);
 		Route::post('/check-mc',[MassageController::class,'checkMC']);
+		Route::get('/delete/{id}',[MassageController::class,'delete']);
+
 	});
 	Route::group(['prefix'=>"locker"], function(){
 		Route::post('/init',[LockerController::class,'initLocker']);
@@ -83,9 +88,12 @@ Route::group(['prefix'=>"api"], function(){
 		Route::post('/cal-check',[LockerController::class,'calCheck']);
 		Route::post('/checkout-init',[LockerController::class,'checkoutInit']);
 		Route::post('/checkout-store',[LockerController::class,'checkoutStore']);
+		Route::get('/delete/{id}',[LockerController::class,'delete']);
+
 	});
 	Route::group(['prefix'=>"shift"], function(){
 		Route::post('/init',[ShiftController::class,'init']);
 		Route::post('/prev-init',[ShiftController::class,'prevInit']);
+
 	});
 });

@@ -4,10 +4,10 @@
 	<meta charset="utf-8">
 	<title></title>
 	<style type="text/css">
-		@page { margin: 5px; }
-		body { margin: 5px; }
+		@page { margin: 0; }
+		body { margin: 0; }
 		.main{
-			width: 200px;
+			width: 300px;
 		}
 		h4{
 			
@@ -18,7 +18,7 @@
 			margin: 0;
 		}
 		.m-space{
-			margin: 4px 0;
+			margin: 2px 0;
 		}
 		.table-div{
 			display: table;
@@ -51,11 +51,14 @@
 		<h4>
 			M/s New Nabaratna Hospitality Pvt. Ltd.
 		</h4>
-		<p class="m-space">
-			AC Executive Lounge, Guwahati Railway Station, PF No. 1
+		<p style="padding:0 15px;text-align: center;">
+			AC Executive Lounge, Haridwar Railway Station<br>PF No. 1
 		</p>
 		<h5>
 			GSTIN: 18AAICN4763E1ZA
+		</h5>
+		<h5>
+			SITTING
 		</h5>
 		<div class="table-div">
 			<div class="w-50">
@@ -76,25 +79,28 @@
 		</div>
 		<div class="table-div" style="margin-bottom: 20px;">
 			<div class="w-50">
-				<span class="text">In Time: <b>{{$print_data->check_in}}</b></span>
+				<span class="text">In Time: <b>{{date("h:i A",strtotime($print_data->check_in))}}</b></span>
 			</div>
 			<div class="w-50">
-				<span class="text">Out Time: <b>{{$print_data->check_out}}</b></span>
+				<span class="text">Out Time: <b>{{date("h:i A",strtotime($print_data->check_out))}}</b></span>
 			</div>
 		</div>
 		<table style="width:100%;margin: -1;" border="1" cellpadding="4" cellspacing="0" >
 			<tr>
 				<td class="w-46">Description</td>
 				<td class="w-16">Quantity</td>
+				<td class="w-16">Hr</td>
 				<td class="w-16">Amount</td>
 			</tr>
 			<tr>
-				<td class="w-46">For Adult 30/- Perpersal</td>
+				<td class="w-46">For Adult 30/- Person</td>
 				<td class="w-16">{{$print_data->no_of_adults}}</td>
+				<td class="w-16" rowspan="4">{{$print_data->hours_occ}}</td>
+
 				<td class="w-16">{{$print_data->adult_amount}}</td>
 			</tr>
 			<tr>
-				<td class="w-46">For Age 5 to 12, 20/- Perpersal</td>
+				<td class="w-46">For Age 5 to 12, 20/- Person</td>
 				<td class="w-16" >{{$print_data->no_of_children}}</td>
 				<td class="w-16">{{$print_data->children_amount}}</td>
 			</tr>
@@ -110,7 +116,8 @@
 			</tr>
 		</table>
 		<div style="margin-top: 20px;text-align: right;">
-			<span style="text-align:right;font-weight: bold;">E.&.O.E</span>
+			<!-- <span style="text-align:right;font-weight: bold;">E.&.O.E</span> -->
+			<span style="text-align:right;font-weight: bold;">** Non Refundable **</span>
 		</div>
 		<div style="margin-top:10px;text-align:center;">
 

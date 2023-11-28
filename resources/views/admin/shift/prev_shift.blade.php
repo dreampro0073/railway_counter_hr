@@ -3,7 +3,14 @@
 @section('main')
     <div class="main" ng-controller="shiftCtrl" ng-init="prevInit();"> 
         <div class="card shadow mb-4 p-4">    
-            <h2 class="">Total Shift Collection (@{{shift_date}} - @{{check_shift}})</h2>
+            <div class="col-md-6">
+                <h2 class="">Total Shift Collection (@{{shift_date}} - @{{check_shift}})</h2>
+            </div>
+            <div class="col-md-6 text-right" style="padding-top: 25px;">
+                <a href="{{url('/admin/shift/print/2')}}" class="btn btn-sm btn-warning"  target="_blank">
+                    Print
+                </a>
+            </div>
             <hr>
              <table class="table table-bordered table-striped" style="width:100%;">
                 <thead>

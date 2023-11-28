@@ -21,7 +21,7 @@ class EntryContoller extends Controller {
 
 		// $check_shift = Entry::checkShift();
 
-		$entries = Entry::select('sitting_entries.*');
+		$entries = Entry::select('sitting_entries.*','users.name as username')->leftJoin('users','users.id','=','sitting_entries.delete_by');
 		if($request->unique_id){
 			$entries = $entries->where('sitting_entries.unique_id', 'LIKE', '%'.$request->unique_id.'%');
 		}		
@@ -39,8 +39,11 @@ class EntryContoller extends Controller {
 			$entries = $entries->where('sitting_entries.train_no', 'LIKE', '%'.$request->train_no.'%');
 		}
 
-		$date_ar = [date("Y-m-d",strtotime('-1 day')),date("Y-m-d",strtotime("now"))];
-		$entries = $entries->orderBy('id', "DESC")->whereBetween('date',$date_ar)->get();
+		// $date_ar = [date("Y-m-d",strtotime('-1 day')),date("Y-m-d",strtotime("now"))];
+		if(Auth::id() != 1){
+			$entries = $entries->where('deleted',0);
+		}
+		$entries = $entries->orderBy('id', "DESC")->get();
 
 		
 		$data = Entry::totalShiftData();
@@ -52,6 +55,7 @@ class EntryContoller extends Controller {
 		if(sizeof($entries) > 0){
 			foreach ($entries as $item) {
 				$item->pay_by = isset($item->pay_type)?$show_pay_types[$item->pay_type]:'';
+				$item->delete_time = date("d-m-Y h:i A",strtotime($item->delete_time));
 			}
 
 		}
@@ -68,7 +72,7 @@ class EntryContoller extends Controller {
 
 		if($sitting_entry){
 			$sitting_entry->mobile_no = $sitting_entry->mobile_no*1;
-			$sitting_entry->train_no = $sitting_entry->train_no*1;
+			// $sitting_entry->train_no = $sitting_entry->train_no*1;
 			$sitting_entry->pnr_uid = $sitting_entry->pnr_uid*1;
 			$sitting_entry->paid_amount = $sitting_entry->paid_amount*1;
 			$sitting_entry->total_amount = $sitting_entry->paid_amount*1;
@@ -151,34 +155,44 @@ class EntryContoller extends Controller {
 			$entry->name = $request->name;
 			$entry->pnr_uid = $request->pnr_uid;
 			$entry->mobile_no = $request->mobile_no;
-			$entry->train_no = $request->train_no;
-			$entry->address = $request->address;
+			// $entry->train_no = $request->train_no;
+			// $entry->address = $request->address;
 			$entry->no_of_adults = $request->no_of_adults ? $request->no_of_adults : 0;
 			$entry->no_of_children = $request->no_of_children ? $request->no_of_children : 0;
 			$entry->no_of_baby_staff = $request->no_of_baby_staff ? $request->no_of_baby_staff : 0;
 			$entry->hours_occ = $request->hours_occ ? $request->hours_occ : 0;
-			$entry->check_in = date("H:i:s",strtotime($request->check_in));
-			$entry->check_out = date("H:i:s",strtotime($request->check_out));
-			
+			// $entry->check_in = date("H:i:s",strtotime($request->check_in));
+			// $entry->check_out = date("H:i:s",strtotime($request->check_out));
+
+
+
+			if($request->id){
+				$entry->check_in = date("H:i:s",strtotime($request->check_in));
+			}else{
+				$entry->check_in = date("H:i:s");
+			}
+
 			$entry->seat_no = $request->seat_no;
 			$entry->paid_amount = $total_amount;
 			$entry->pay_type = $request->pay_type;
 			$entry->remarks = $request->remarks;
 			$entry->shift = $check_shift;
 			$entry->save();
+			$no_of_min = $request->hours_occ*60;
+
+			$entry->check_out = date("H:i:s",strtotime("+".$no_of_min." minutes",strtotime($entry->check_in)));
 
 			$check_in_time = strtotime($entry->check_in);
-        	$current_time = strtotime(date("H:i:s"));
+        	$date = Entry::getPDate();
+	        $entry->date = $date;
         	
-        	$date = date("Y-m-d");
-
-        	if($current_time > strtotime("00:00:00") && $current_time < strtotime("06:00:00")){
-	           	$date = date("Y-m-d",strtotime("-1 day"));
-	        }
+        	
 	        $entry->date = $date;
 			$entry->added_by = Auth::id();
 	        
 			$entry->save();
+
+			
 
 
 
@@ -246,6 +260,20 @@ class EntryContoller extends Controller {
         // $dompdf->setPaper([0,0,300,405]);
         // $dompdf->render();
         // $dompdf->stream(date("dmY",strtotime("now")).'.pdf',array("Attachment" => false));
+    }
+
+    public function delete($id){
+    	DB::table('sitting_entries')->where('id',$id)->update([
+    		'deleted' => 1,
+    		'delete_by' => Auth::id(),
+    		'delete_time' => date("Y-m-d H:i:s"),
+
+    	]);
+
+    	$data['success'] = true;
+    	$data['message'] = "Successfully";
+		
+		return Response::json($data, 200, []);
     }
 
 }

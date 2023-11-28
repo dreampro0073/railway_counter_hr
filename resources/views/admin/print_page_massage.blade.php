@@ -4,10 +4,10 @@
 	<meta charset="utf-8">
 	<title></title>
 	<style type="text/css">
-		@page { margin: 5px; }
-		body { margin: 5px; }
+		@page { margin: 0; }
+		body { margin: 0; }
 		.main{
-			/*width: 200px;*/
+			width: 300px;
 		}
 		h4{
 			
@@ -51,14 +51,17 @@
 		<h4>
 			M/s New Nabaratna Hospitality Pvt. Ltd.
 		</h4>
-		<p class="m-space">
-			AC Executive Lounge, Guwahati Railway Station, PF No. 1
+		<p style="padding:0 15px;text-align: center;">
+			AC Executive Lounge, Haridwar Railway Station<br>PF No. 1
 		</p>
 		<h5>
-			GSTIN: 18AAICN4763E1ZA
+			GSTIN: 18AAICN4763E1ZA 
+		</h5>
+		<h5>
+			MASSAGE
 		</h5>
 		
-		<div class="table-div" style="margin-bottom:4px;">
+		<div class="table-div" style="margin-bottom:2px;">
 			<div class="w-50">
 				<span class="text">Bill No: <b>{{ $print_data->unique_id }}</b></span>
 			</div>
@@ -66,7 +69,7 @@
 				<span class="text">Date: <b><?php echo date("d-m-Y"); ?></b></span>
 			</div>
 		</div>
-		<div class="table-div" style="margin-bottom:4px;">
+		<div class="table-div" style="margin-bottom:2px;">
 			<div class="w-50">
 				<span class="text">Name: <b>{{$print_data->name}}</b></span>
 			</div>
@@ -75,7 +78,7 @@
 			</div>
 		</div>
 		
-		<div class="table-div" style="margin-bottom:4px;">
+		<div class="table-div" style="margin-bottom:2px;">
 			<div class="w-50">
 				<span class="text">Time: <b>{{date("h:i A",strtotime($print_data->in_time))}} to {{date("h:i A",strtotime($print_data->out_time))}}</b></span>
 			</div>
@@ -85,7 +88,8 @@
 		</div>
 		
 		<div style="margin-top: 20px;text-align: right;">
-			<span style="text-align:right;font-weight: bold;">E.&.O.E</span>
+			<!-- <span style="text-align:right;font-weight: bold;">E.&.O.E</span> -->
+			<span style="text-align:right;font-weight: bold;">** Non Refundable **</span>
 		</div>
 		<div style="margin-top:10px;text-align:center;">
 

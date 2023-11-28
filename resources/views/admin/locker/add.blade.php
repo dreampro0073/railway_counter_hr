@@ -26,32 +26,27 @@
                             <label>Mobile No.</label>
                             <input type="number" ng-model="formData.mobile_no" class="form-control" required />
                         </div>
-                        <div class="col-md-4 form-group">
-                            <label>Address</label>
-                            <input type="text" ng-model="formData.address" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 form-group">
-                            <label>Check In</label>
-                           
-                            <input type="text" class="form-control" date-time-picker ng-model="formData.check_in" ng-change="calCheck()" dataobj="formData" dataitem="check_in" id="timePicker">
-                        </div>
-                        <div class="col-md-4 form-group">
-                            <label>PNR/UID</label>
-                            <input type="number" ng-model="formData.pnr_uid" class="form-control" required />
+                        <div class="col-md-3 form-group">
+                            <label>NOS</label>
+                            <input type="number" ng-model="formData.nos" class="form-control" />
                         </div>
                         
-                        <div class="col-md-4 form-group">
-                            <label>Train No.</label>
-                            <input type="number" ng-model="formData.train_no" class="form-control" />
-                        </div>
                     </div>
-                  
-                    <div class="row">  
+                    <div class="row">
+                        
+                        
+                        <div class="col-md-3 form-group" ng-if="formData.id > 0">
+                            <label>Check In</label>
+                           
+                            <input type="text" class="form-control" ng-model="formData.check_in" readonly>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>PNR/UID</label>
+                            <input type="number" ng-model="formData.pnr_uid" class="form-control" />
+                        </div>                        
                         <div class="col-md-3 form-group">
                             <label>No Of Days</label>
-                            <select ng-model="formData.no_of_day" class="form-control" required convert-to-number ng-change="calCheck()" >
+                            <select ng-model="formData.no_of_day" class="form-control" ng-change="changeAmount()" required convert-to-number >
                                 <option value="">--select--</option>
                                 <option ng-repeat="item in days" value="@{{item.value}}">@{{ item.label}}</option>
                             </select>
@@ -80,7 +75,7 @@
                             <input type="number" ng-model="formData.paid_amount" class="form-control" readonly />
                         </div>                        
                         
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-4 form-group" ng-if="formData.id > 0">
                             <label>Check Out</label>
                             <input type="text" class="form-control" ng-model="formData.check_out" readonly>
                         </div>
@@ -89,6 +84,13 @@
                             <label>Remarks</label>
                             <textarea ng-model="formData.remarks" class="form-control"></textarea>
                         </div>
+                        
+                       
+                    </div>
+                  
+                    <div class="row">  
+                       
+                        
                     </div>
                     <div class="pt-4">
                         <button type="submit" class="btn btn-primary" ng-disabled="loading">

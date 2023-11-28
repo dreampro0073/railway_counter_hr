@@ -45,8 +45,12 @@ class LockerController extends Controller {
 		}
 
 		$date_ar = [date("Y-m-d",strtotime('-1 day')),date("Y-m-d",strtotime("now"))];
-		// $l_entries = $l_entries->orderBy('id', "DESC")->whereBetween('date',$date_ar)->get();
-		$l_entries = $l_entries->where('checkout_status', 0)->orderBy('id', "DESC")->take(100)->get();
+		
+		if(Auth::id() != 1){
+			$l_entries = $l_entries->where('deleted',0);
+		}
+		$l_entries = $l_entries->orderBy('id', "DESC");
+		$l_entries = $l_entries->where('checkout_status', 0)->get();
 
 
 		$pay_types = Entry::payTypes();
@@ -57,6 +61,9 @@ class LockerController extends Controller {
 		if(sizeof($l_entries) > 0){
 			foreach ($l_entries as $item) {
 				$item->pay_by = isset($item->pay_type)?$show_pay_types[$item->pay_type]:'';
+
+				$item->delete_time = date("d-m-Y h:i A",strtotime($item->delete_time));
+
 			}
 
 		}
@@ -130,13 +137,20 @@ class LockerController extends Controller {
 
 			
 			$entry->name = $request->name;
+			$entry->nos = $request->nos;
 			$entry->pnr_uid = $request->pnr_uid;
 			$entry->mobile_no = $request->mobile_no;
-			$entry->train_no = $request->train_no;
-			$entry->address = $request->address;
+			// $entry->train_no = $request->train_no;
+			// $entry->address = $request->address;
 
-			$entry->check_in = date("H:i:s",strtotime($request->check_in));
-			$entry->check_out = date("H:i:s",strtotime($request->check_out));
+			// $entry->check_in = date("H:i:s",strtotime($request->check_in));
+			// $entry->check_out = date("H:i:s",strtotime($request->check_out));
+
+			if($request->id){
+				$entry->check_in = date("H:i:s",strtotime($request->check_in));
+			}else{
+				$entry->check_in = date("H:i:s");
+			}
 			$entry->locker_id = $request->locker_id;
 			$entry->no_of_day = $request->no_of_day;
 			$entry->pay_type = $request->pay_type;
@@ -144,9 +158,13 @@ class LockerController extends Controller {
 			$entry->paid_amount = $request->paid_amount;
 			$entry->save();
 
+			$no_of_min = $request->no_of_day*24*60;
+
+			$entry->check_out = date("H:i:s",strtotime("+".$no_of_min." minutes",strtotime($entry->check_in)));
+
 			$date = date("Y-m-d");
 			$checkout_date = date("Y-m-d H:i:s",strtotime("+".$entry->no_of_day.' day',strtotime($date.$entry->check_out)));
-
+			$date = Entry::getPDate();
 	        $entry->date = $date;
 	        $entry->checkout_date = $checkout_date;
 
@@ -192,6 +210,8 @@ class LockerController extends Controller {
     		$entry->checkout_status = 1; 
     		$entry->save();
     		$data['success'] = true;
+
+    		DB::table('lockers')->where('id',$l_entry->locker_id)->update(['status'=>0]);
     
     	} else {
     		$str_day = ($now_time - $checkout_time)/(60 * 60 * 24);
@@ -244,12 +264,15 @@ class LockerController extends Controller {
 		$entry->checkout_date = date('Y-m-d H:i:s'); 
 		$entry->save();
 
+		$date = Entry::getPDate();
+
+
 		DB::table('locker_penalty')->insert([
 			'locker_entry_id' => $entry->id,
 			'penalty_amount' => $request->balance,
 			'pay_type' => $request->pay_type,
 			'shift' => $check_shift,
-			'date' => date('Y-m-d'),
+			'date' =>$date,
 			'current_time' => date("H:i:s"),
 			'created_at' => date('Y-m-d H:i:s'),
 		]);
@@ -257,6 +280,20 @@ class LockerController extends Controller {
 		$data['success'] = true;
 		return Response::json($data, 200, []);
     }
+
+
+    public function delete($id){
+    	DB::table('locker_entries')->where('id',$id)->update([
+    		'deleted' => 1,
+    		'delete_by' => Auth::id(),
+    		'delete_time' => date("Y-m-d H:i:s"),
+    	]);
+
+    	$data['success'] = true;
+    	$data['message'] = "Successfully";
+		
+		return Response::json($data, 200, []);
+	}
 
 
 }

@@ -149,4 +149,9 @@ label.error {
   margin-right: 8px;
   width: 20px; }
 
+.my_class {
+  background: purple !important; }
+  .my_class td {
+    color: #fff !important; }
+
 /*# sourceMappingURL=custom.css.map */

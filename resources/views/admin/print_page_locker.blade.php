@@ -4,10 +4,10 @@
 	<meta charset="utf-8">
 	<title></title>
 	<style type="text/css">
-		@page { margin: 5px; }
-		body { margin: 5px; }
+		@page { margin: 0; }
+		body { margin: 0; }
 		.main{
-			/*width: 200px;*/
+			width: 300px;
 		}
 		h4{
 			
@@ -51,11 +51,14 @@
 		<h4>
 			M/s New Nabaratna Hospitality Pvt. Ltd.
 		</h4>
-		<p class="m-space">
-			AC Executive Lounge, Guwahati Railway Station, PF No. 1
+		<p style="padding:0 15px;text-align: center;">
+			AC Executive Lounge, Haridwar Railway Station<br>PF No. 1
 		</p>
 		<h5>
 			GSTIN: 18AAICN4763E1ZA
+		</h5>
+		<h5>
+			LOCKER
 		</h5>
 		<div class="table-div">
 			<div class="w-50">
@@ -67,18 +70,20 @@
 		</div>
 		<div class="table-div">
 			<div class="w-50">
-				<span class="text">Locker No: <b>{{ $print_data->locker_id }}</b></span>
-			</div>
-			<div class="w-50">
-				
-			</div>
-		</div>
-		<div class="table-div">
-			<div class="w-50">
 				<span class="text">Name: <b>{{ $print_data->name }}</b></span>
 			</div>
 			<div class="w-50">
-				<span class="text">Amount: <b>{{ $print_data->paid_amount }}</b></span>
+				<span class="text">Mobile:<b>{{$print_data->mobile_no}}</b></span>
+			</div>
+
+		</div>
+		<div class="table-div">
+			<div class="w-50">
+				<span class="text">Locker No: <b>{{ $print_data->locker_id }}</b></span>
+			</div>
+
+			<div class="w-50">
+				<span class="text">NOS: <b>{{ $print_data->nos }}</b></span>
 			</div>
 		</div>
 		<div class="table-div">
@@ -86,19 +91,20 @@
 				<span class="text">PNR/ID No.: <b>{{$print_data->pnr_uid}}</b></span>
 			</div>
 			<div class="w-50">
-				<span class="text">Mobile:<b>{{$print_data->mobile_no}}</b></span>
+				<span class="text">Paid Amount: <b>{{ $print_data->paid_amount }}</b></span>
 			</div>
 		</div>
-		<div class="table-div" style="margin-bottom: 20px;">
-			<div class="w-50">
+		<div style="margin-bottom:10px;">
+			<div>
 				<span class="text">In Time: <b>{{date("d-m-Y",strtotime($print_data->date))}}, {{date("h:i A",strtotime($print_data->check_in))}}</b></span>
 			</div>
-			<div class="w-50">
+			<div>
 				<span class="text">Out Time: <b>{{date("d-m-Y, h:i A",strtotime($print_data->checkout_date))}}</b></span>
 			</div>
 		</div>
-		<div style="margin-top: 20px;text-align: right;">
-			<span style="text-align:right;font-weight: bold;">E.&.O.E</span>
+		<div style="margin-top:10px;text-align: right;">
+			<!-- <span style="text-align:right;font-weight: bold;">E.&.O.E</span> -->
+			<span style="text-align:right;font-weight: bold;">** Non Refundable **</span>
 		</div>
 		<div style="margin-top:10px;text-align:center;">
 
