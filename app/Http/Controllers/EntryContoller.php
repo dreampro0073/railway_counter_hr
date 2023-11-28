@@ -187,6 +187,10 @@ class EntryContoller extends Controller {
 	        $entry->date = $date;
         	
         	
+<<<<<<< HEAD
+=======
+        	$date = Entry::getPDate();
+>>>>>>> 8b697efac5fec30c8ca3d611313293cfa74033c0
 	        $entry->date = $date;
 			$entry->added_by = Auth::id();
 	        

@@ -27,6 +27,7 @@ class Massage extends Model
         if($check_shift != "C"){
             $shift_date = date("Y-m-d");   
    
+<<<<<<< HEAD
             $total_shift_upi = Massage::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->where('deleted',0)->sum("paid_amount");
 
             $total_shift_cash = Massage::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->where('deleted',0)->sum("paid_amount");  
@@ -34,6 +35,15 @@ class Massage extends Model
             $last_hour_upi_total = Massage::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->where('deleted',0)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount");
 
             $last_hour_cash_total = Massage::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->where('deleted',0)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount"); 
+=======
+            $total_shift_upi = Massage::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->sum("paid_amount");
+
+            $total_shift_cash = Massage::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->sum("paid_amount");  
+
+            $last_hour_upi_total = Massage::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount");
+
+            $last_hour_cash_total = Massage::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount"); 
+>>>>>>> 8b697efac5fec30c8ca3d611313293cfa74033c0
 
 
             $shift_date = date("d-m-Y");   
@@ -49,6 +59,7 @@ class Massage extends Model
             $shift_date = date("d-m-Y",strtotime($p_date));
 
 
+<<<<<<< HEAD
             $total_shift_upi = Massage::where('date',$p_date)->where('shift', $check_shift)->where('deleted',0)->where('pay_type',2)->sum("paid_amount");
 
             $total_shift_cash = Massage::where('date',$p_date)->where('shift', $check_shift)->where('deleted',0)->where('pay_type',1)->sum("paid_amount");
@@ -56,6 +67,15 @@ class Massage extends Model
             $last_hour_upi_total = Massage::where('date',$p_date)->where('shift', $check_shift)->where('deleted',0)->where('pay_type',2)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount"); 
 
             $last_hour_cash_total = Massage::where('date',$p_date)->where('shift', $check_shift)->where('deleted',0)->where('pay_type',1)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount");
+=======
+            $total_shift_upi = Massage::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',2)->sum("paid_amount");
+
+            $total_shift_cash = Massage::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',1)->sum("paid_amount");
+
+            $last_hour_upi_total = Massage::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',2)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount"); 
+
+            $last_hour_cash_total = Massage::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',1)->whereBetween('in_time', [$from_time, $to_time])->sum("paid_amount");
+>>>>>>> 8b697efac5fec30c8ca3d611313293cfa74033c0
             
         }
 

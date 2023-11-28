@@ -26,6 +26,7 @@ class Locker extends Model
         if($check_shift != "C"){
 
             $shift_date = date("Y-m-d");   
+<<<<<<< HEAD
 
 
             $total_shift_upi = Locker::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->where('deleted',0)->sum("paid_amount");
@@ -40,6 +41,22 @@ class Locker extends Model
             $last_hour_upi_total += DB::table('locker_penalty')->where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->whereBetween('current_time', [$from_time, $to_time])->sum('penalty_amount'); 
 
             $last_hour_cash_total = Locker::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->where('deleted',0)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount"); 
+=======
+
+
+            $total_shift_upi = Locker::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->sum("paid_amount");
+
+            $total_shift_upi += DB::table('locker_penalty')->where('date',date("Y-m-d"))->where('pay_type',2)->where('shift', $shift_date)->sum('penalty_amount');
+
+            $total_shift_cash = Locker::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->sum("paid_amount"); 
+            $total_shift_cash += DB::table('locker_penalty')->where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->sum('penalty_amount'); 
+
+            $last_hour_upi_total = Locker::where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount");
+
+            $last_hour_upi_total += DB::table('locker_penalty')->where('date',$shift_date)->where('pay_type',2)->where('shift', $check_shift)->whereBetween('current_time', [$from_time, $to_time])->sum('penalty_amount'); 
+
+            $last_hour_cash_total = Locker::where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount"); 
+>>>>>>> 8b697efac5fec30c8ca3d611313293cfa74033c0
             $last_hour_cash_total += DB::table('locker_penalty')->where('date',$shift_date)->where('pay_type',1)->where('shift', $check_shift)->whereBetween('current_time', [$from_time, $to_time])->sum('penalty_amount'); 
 
             $shift_date = date("d-m-Y");   
@@ -49,6 +66,7 @@ class Locker extends Model
         if($check_shift == "C"){
 
             $p_date = Entry::getPDate();
+<<<<<<< HEAD
             // dd($p_date);
             $shift_date = date("d-m-Y",strtotime($p_date));
 
@@ -63,6 +81,21 @@ class Locker extends Model
             $last_hour_upi_total += DB::table('locker_penalty')->where('date',$p_date)->where('shift', $check_shift)->where('pay_type',2)->whereBetween('current_time', [$from_time, $to_time])->sum("penalty_amount"); 
             
             $last_hour_cash_total = Locker::where('date',$p_date)->where('shift', $check_shift)->where('deleted',0)->where('pay_type',1)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount");
+=======
+            $shift_date = date("d-m-Y",strtotime($p_date));
+
+            $total_shift_upi = Locker::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',2)->sum("paid_amount");
+
+            $total_shift_upi += DB::table('locker_penalty')->where('date',$p_date)->where('shift', $check_shift)->where('pay_type',2)->sum("penalty_amount");
+
+            $total_shift_cash = Locker::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',1)->sum("paid_amount");
+            $total_shift_cash += DB::table('locker_penalty')->where('date',$p_date)->where('shift', $check_shift)->where('pay_type',1)->sum("penalty_amount");
+
+            $last_hour_upi_total = Locker::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',2)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount"); 
+            $last_hour_upi_total += DB::table('locker_penalty')->where('date',$p_date)->where('shift', $check_shift)->where('pay_type',2)->whereBetween('current_time', [$from_time, $to_time])->sum("penalty_amount"); 
+            
+            $last_hour_cash_total = Locker::where('date',$p_date)->where('shift', $check_shift)->where('pay_type',1)->whereBetween('check_in', [$from_time, $to_time])->sum("paid_amount");
+>>>>>>> 8b697efac5fec30c8ca3d611313293cfa74033c0
             $last_hour_cash_total += DB::table('locker_penalty')->where('date',$p_date)->where('shift', $check_shift)->where('pay_type',1)->whereBetween('current_time', [$from_time, $to_time])->sum("penalty_amount");            
         }
 

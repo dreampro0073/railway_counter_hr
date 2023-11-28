@@ -164,8 +164,15 @@ class LockerController extends Controller {
 
 			$date = date("Y-m-d");
 			$checkout_date = date("Y-m-d H:i:s",strtotime("+".$entry->no_of_day.' day',strtotime($date.$entry->check_out)));
+<<<<<<< HEAD
 			$date = Entry::getPDate();
+=======
+
+        	$date = Entry::getPDate();
+>>>>>>> 8b697efac5fec30c8ca3d611313293cfa74033c0
 	        $entry->date = $date;
+
+
 	        $entry->checkout_date = $checkout_date;
 
 			$entry->shift = $check_shift;
